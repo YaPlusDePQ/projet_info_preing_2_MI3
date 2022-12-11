@@ -54,17 +54,17 @@
     // seg fault si -1 -- Razu 11/12 1:09
     ```
 * Lisibilité de l'exécution
-    * Des printf réguliers dans les fonctions pour afficher la progression dans du code dans la console et détecter rapidement des seg. fault.
+    * Des printf réguliers dans les fonctions pour afficher la progression du programme dans la console et détecter rapidement des seg. fault/bug.
     * Chaque printf qui **n'est pas dans le main** devra indiquer sa fonction d'origine. 
     ```C 
     printf("[MyFonction] ...");
     ```
 
 # GitHub
-_git doit être installé bien sur. si c'est pas le cas c'est ici_
+_git doit être installé bien sur. si c'est pas le cas c'est [ici](https://git-scm.com/downloads)_
 
 ## Set up
-Le lien de la repositorie git est la https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git.<br />
+Le lien de la repositorie git est https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git.<br />
 Une fois placé dans le dossier voulu, éxécuter la commande suivante pour charger la repositorie.
 ```
 git clone https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
@@ -78,18 +78,19 @@ git remote add [nom] https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
     
 | Commande  | Action |
 | ------------- |:-------------:|
-| git add [fichier(s) ou . (pour inclure le dossier entier)] |ajoute les fichiers indiqués au prochain commit |
+| git add [fichier(s) ou . (pour inclure toutes les modifications)] |ajoute les fichiers indiqués au prochain commit |
 | git commit -m "[message]" | crée le commit prêt à être push sur la repositorie |
 | git push [remote nom] master | publie le commit |
 | git clone [url] | télécharge la repositorie |
 | git remote -v | donne le nom de référence |
 
-Si personne travaille en même sur le meme fichier (ce qui devrait normalement jamais arriver) **ne pas** forcer avec les pull et push et aller manuellment sur la repositorie pour constater les differents changements. 
+Si deux personnes travaillent en même sur le même fichier (ce qui devrait normalement jamais arriver) **ne pas** forcer avec les pull et push et aller manuellment sur la repositorie pour constater les differents changements. 
 
 # Conseils de développements
 
-* On teste son code régulièrement aka on le compile régulièrement.
+* On teste son code régulièrement aka **on le compile régulièrement**.
+* Le seul warning autorisé lors de la compilation est "unused variable", tout autre warning doit être réglé.
 * Quand on écrit une fonction on l'a test **individuellement**.
-* Question => Google **toujours rechercher en anglais et en précisant son langage à la fin**. Penser à prioriser StackOverflow pour les résultats.
+* Question => Google **toujours rechercher en anglais et en précisant son langage à la fin**. Pensez à prioriser StackOverflow pour les résultats.
 * La phrase "c'est pas possible" n'existe pas en C.
 * S'il y a blocage sur un code prendre une pause de 10 min.
