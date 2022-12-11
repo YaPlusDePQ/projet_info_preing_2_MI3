@@ -64,12 +64,12 @@
 _git doit être installé bien sur. si c'est pas le cas c'est ici_
 
 ## Set up
-Le lien de la repositories git est la https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git.<br />
-Une fois placé dans le dossier voulu, éxécuter la commande suivante pour charger la repositories.
+Le lien de la repositorie git est la https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git.<br />
+Une fois placé dans le dossier voulu, éxécuter la commande suivante pour charger la repositorie.
 ```
 git clone https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
 ```
-Puis utiliser la commande suivante pour créé un mot de référence à la repositories pour les future commande.
+Puis utiliser la commande suivante pour créé un mot de référence à la repositorie pour les future commande.
 ```
 git remote add [nom] https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
 ```
@@ -78,13 +78,13 @@ git remote add [nom] https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
     
 | Commande  | Action |
 | ------------- |:-------------:|
-| git add [fichier(s) ou . (pour inclure le dossier entier)] | ajoute les fichiers indiqué au prochain commit |
-| git commit -m "[message]" | créé le commit prêt à être push sur la repositories |
+| git add [fichier(s) ou . (pour inclure le dossier entier)] |ajoute les fichiers indiqués au prochain commit |
+| git commit -m "[message]" | crée le commit prêt à être push sur la repositorie |
 | git push [remote nom] master | publie le commit |
-| git clone [url] | télécharge la repositories |
+| git clone [url] | télécharge la repositorie |
 | git remote -v | donne le nom de référence |
 
-Si personne travaille en même sur le meme fichier (ce qui devrait normalement jamais arriver) **ne pas** forcer avec les pull et push et aller manuellment sur la repositories pour constater les differents changements. 
+Si personne travaille en même sur le meme fichier (ce qui devrait normalement jamais arriver) **ne pas** forcer avec les pull et push et aller manuellment sur la repositorie pour constater les differents changements. 
 
 # Conseils de développements
 
