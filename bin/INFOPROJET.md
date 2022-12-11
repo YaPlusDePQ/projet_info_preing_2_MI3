@@ -64,14 +64,14 @@
 _git doit être installé bien sur. si c'est pas le cas c'est ici_
 
 ## Set up
-Le lien de la repositories git est la []().<br />
+Le lien de la repositories git est la https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git.<br />
 Une fois placé dans le dossier voulu, éxécuter la commande suivante pour charger la repositories.
 ```
-git clone 
+git clone https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
 ```
 Puis utiliser la commande suivante pour créé un mot de référence à la repositories pour les future commande.
 ```
-git add remote [nom] 
+git remote add [nom] https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
 ```
 
 ## Liste des commandes 
