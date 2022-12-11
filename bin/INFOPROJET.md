@@ -81,7 +81,7 @@ git remote add [nom] https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
 | git add [fichier(s) ou . (pour inclure toutes les modifications)] |ajoute les fichiers indiqués au prochain commit |
 | git commit -m "[message]" | crée le commit prêt à être push sur la repositorie |
 | git push [remote nom] master | publie le commit |
-| git pull | mets à jours les fichiers locaux |
+| git pull [remote nom] master | mets à jours les fichiers locaux |
 | git clone [url] | télécharge la repositorie |
 | git remote -v | donne le nom de référence |
 
