@@ -81,7 +81,8 @@ git remote add [nom] https://github.com/YaPlusDePQ/projet_info_preing_2_MI3.git
 | git add [fichier(s) ou . (pour inclure le dossier entier)] | ajoute les fichiers indiqué au prochain commit |
 | git commit -m "[message]" | créé le commit prêt à être push sur la repositories |
 | git push [remote nom] master | publie le commit |
-| git clone | télécharge la repositories |
+| git clone [url] | télécharge la repositories |
+| git remote -v | donne le nom de référence |
 
 Si personne travaille en même sur le meme fichier (ce qui devrait normalement jamais arriver) **ne pas** forcer avec les pull et push et aller manuellment sur la repositories pour constater les differents changements. 
 
