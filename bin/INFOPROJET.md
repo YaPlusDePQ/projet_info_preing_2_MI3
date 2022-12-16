@@ -99,13 +99,13 @@ Si deux personnes travaillent en même sur le même fichier (ce qui devrait norm
 # Info Projet
 
 * les options envoyées au C sont:
-** -f <nom_fichier>: chemin du fichier des données filtrées 
-** -r: permet de trier dans le sens décroissant, si -r n'est pas présent trier en mode croissant.
-**--tab/--abr/--avl: pour le mode de trie utilisé.
-**-d <1-2-3>: type de données avec lesquels le C va interagir (1:int, 2:float, 3:date)
+ * -f <nom_fichier>: chemin du fichier des données filtrées 
+ * -r: permet de trier dans le sens décroissant, si -r n'est pas présent trier en mode croissant.
+ * --tab/--abr/--avl: pour le mode de trie utilisé.
+ * -d <1-2-3>: type de données avec lesquels le C va interagir (1:int, 2:float, 3:date)
 
 * les codes erreurs (à completer si besoin):
-** 1xx: allocations.
-** 2xx: lecture impossible.
-** la deuxième valeur est réservée pour le numéro du fichier concerné (vérifier que deux fichiers n'ont pas le même code!).
-** la dernière valeur est réservée pour l'emplacement de l'erreur DANS le fichier.
+ * 1xx: allocations.
+ * 2xx: lecture impossible.
+ * la deuxième valeur est réservée pour le numéro du fichier concerné (vérifier que deux fichiers n'ont pas le même code!).
+ * la dernière valeur est réservée pour l'emplacement de l'erreur DANS le fichier.
