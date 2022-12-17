@@ -24,16 +24,16 @@
 * On ne va pas bidouiller sur le travail des autres sans leurs autorisations.
 * Le langage du code est **l'anglais**.
 * Nomenclature
-    * On utilise le CamelCase pour tous les noms (variables, fonctions, types, fichier....).
+    * On utilise le camelCase pour tous les noms (variables, fonctions, types, fichier....).
     ```C
-    void MyFonction(...){}; 
-    int MyVariable;
+    void myFonction(...){}; 
+    int myVariable;
     ```
     * Les defines et macros sont strictement en majuscule.
     * Les fonctions qui sont créées spécifiquement pour une autre fonction (sous fonction) et qui ne doivent pas être appelées dans un autre contexte 
     possèderont le préfixe '\_'. exemple: 
     ```C
-    int _SousFonctionRecurcive(...){}
+    int _sousFonctionRecurcive(...){}
     ```
     * **TABULATION À CHAQUE OUVERTURE DE {.**
 * Commentaires
