@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "abr.h": "c",
-        "maindefine.h": "c"
+        "maindefine.h": "c",
+        "datafmtg.h": "c",
+        "node.h": "c"
     }
 }
