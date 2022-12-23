@@ -9,12 +9,20 @@ typedef struct list{
 
 List * ListCreation(int a, int b);
 
-List* ListInsert(List * plist, int a,int b);
+List* ListInsertEnd(List * plist, int a,int b);
 
 void DisplayList(List * plist);
 
 List * FileIntoList(FILE * file);
 
 FILE* ListIntoFile(List * plist);
+
+int ChecksSortedAscending(List * plist);
+
+int ChecksSortedDescending(List * plist);
+
+List * SortAscending(List *plist);
+
+List * SortDescending(List *plist);
 
 #endif 
