@@ -17,8 +17,4 @@ List * FileIntoList(FILE * file);
 
 FILE* ListIntoFile(List * plist);
 
-List * SortAscending(List *plist);
-
-List * SortDescending(List *plist);
-
 #endif 
