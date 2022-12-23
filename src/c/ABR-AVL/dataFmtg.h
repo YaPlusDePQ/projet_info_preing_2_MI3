@@ -3,6 +3,8 @@
 
 int monthToDay(int month);
 
-long long int dateToInt(char* date);
+long long int dateToInt(const char* date);
+
+dataType getDataTypeFromChar(const char* source);
 
 #endif

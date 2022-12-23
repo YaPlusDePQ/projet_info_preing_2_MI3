@@ -40,7 +40,7 @@ int monthToDay(int month){
 *
 *  \return day.
 */
-long long int dateToInt(char* date){
+long long int dateToInt(const char* date){
     int year = -1;
     int month = -1;
     int day = -1;
@@ -52,4 +52,17 @@ long long int dateToInt(char* date){
     else{
         ERR(210, "Failed to read data from %s", date);
     }
+}
+
+/**  
+*  \brief get the dataType from string.
+*
+*  \param source input string.
+*
+*  \return dataType of the string.
+*/
+dataType getDataTypeFromChar(const char* source){
+    if(strchr(source, '.') != NULL) return DEC; //test if decimal point
+    if(strchr(source, ':') != NULL) return DATE; //test if : for time separation
+    else return INT;
 }

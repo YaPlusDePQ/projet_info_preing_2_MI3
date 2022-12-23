@@ -9,7 +9,7 @@
 *
 *  \return pointer to the new node.
 */
-node* createNewNode(dataType dt, long long int intInput, double decInput){
+node* createNewNode(dataType dt, long long int intInput, double decInput, char line[1000]){
     node* newNode = malloc(sizeof(node));
     if(newNode==NULL) ERR(100, "Node memory allocation failed.\n");
     newNode->lc = NULL;
@@ -17,7 +17,8 @@ node* createNewNode(dataType dt, long long int intInput, double decInput){
     newNode->dt = dt;
     newNode->integer = intInput;
     newNode->decimal = decInput;
-    DPRINTF("[createNewNode] new Node created at %p:[%s] [%I64d] [%.3f]\n", newNode, newNode->dt==INT ? "INT" : newNode->dt==DEC ? "DEC" : "DATE", newNode->integer, newNode->decimal);
+    strcpy(newNode->line, line);
+    DPRINTF("[createNewNode] new Node created at %p:[%s] [%I64d] [%.3f] [%s]\n", newNode, newNode->dt==INT ? "INT" : newNode->dt==DEC ? "DEC" : "DATE", newNode->integer, newNode->decimal, newNode->line);
     return newNode;
 }
 
@@ -42,23 +43,25 @@ void freeAllNode(node* head){
 }
 
 /**
-*  \brief recurcive call for printfNode.
+*  \brief Recurcive call for printfNode.
 *
 *  \param dt Type of data stored in the node.
-*  \param node Node to print.
-*  \param level depth of node.
+*  \param current Current node during recursion.
+*  \param level Depth of node.
 */
-void _printfNodeRCall(dataType dt, node* node, int level){
-    for(int i=1; i<level; i++){
-        printf(" |");
+void _printfNodeRCall(dataType dt, node* current, int level){
+    if(current!=NULL) _printfNodeRCall(dt, current->rc, level+1);
+
+    for(int i=0; i<level; i++){
+        printf("  ");
     }
-    if(level != 0 ) printf(" \\_");
-   
-    if(dt!=DEC) printf("%I64d\n", node->integer);
-    else printf("%.3f\n", node->decimal);
+    if(current!=NULL){
+        if(dt!=DEC) printf("%I64d\n", current->integer);
+        else printf("%.3f\n", current->decimal);
+    }
+    else printf("NULL\n");
     
-    if(node->rc!=NULL) _printfNodeRCall(dt, node->rc, level+1);
-    if(node->lc!=NULL) _printfNodeRCall(dt, node->lc, level+1);
+    if(current!=NULL) _printfNodeRCall(dt, current->lc, level+1);
 }
 
 /**

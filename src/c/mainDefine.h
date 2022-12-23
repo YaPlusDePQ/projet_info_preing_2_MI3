@@ -24,12 +24,13 @@ Error code:
 1xx: allocation
     10x /ABR-AVL/node.c
     11x /ABR-AVL/dataFmtg.c
+    12x /ABR-AVL/abr.c
 2xx: failed to read
     20x /ABR-AVL/node.c
     21x /ABR-AVL/dataFmtg.c
-
-
-
+    22x /ABR-AVL/abr.c
+3xx: failed to write
+    30x /ABR-AVL/abr.c
 */
 
 /* headers */

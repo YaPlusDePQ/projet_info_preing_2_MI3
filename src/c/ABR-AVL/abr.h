@@ -3,6 +3,8 @@
 
 node* addNewNodeABR(dataType dt, node* head, node* newNode);
 
-node* intGetDataFromFileABR(FILE* file);
+node* BuildABRFromFile(const char* sourcePath);
+
+void BuildFileFromABR(node* head, const char* sourcePath, const char* outPath, int descending);
 
 #endif

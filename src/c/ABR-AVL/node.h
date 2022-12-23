@@ -13,9 +13,10 @@ struct node{
     dataType dt; // type of data stored in the node
     long long int integer; // variable for integer and date (long long int because date will be store as second)
     double decimal; // variable for decimal
+    char line[1000]; //line of the data
 };
 
-node* createNewNode(dataType dt, long long int intInput, double decInput);
+node* createNewNode(dataType dt, long long int intInput, double decInput, char line[1000]);
 
 void freeAllNode(node* head);
 
