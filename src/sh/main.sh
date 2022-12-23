@@ -60,8 +60,10 @@ do
     \?) echo "ERREUR! L'option saisie n'existe pas"
     esac
 done
+
 #lieux 
 
 #dates 
 #tris
 #fichiers
+exit 0
