@@ -9,6 +9,7 @@
 /* optional library */
 #include <stdbool.h>
 #include <string.h>
+#include <errno.h>
 // #include <math.h>
 // #include <time.h>
 
@@ -35,5 +36,6 @@ Error code:
 #include "./ABR-AVL/node.h"
 #include "./ABR-AVL/abr.h"
 #include "./ABR-AVL/dataFmtg.h"
+#include "./List/List.h"
 
 #endif
