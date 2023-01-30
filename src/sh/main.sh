@@ -1,7 +1,7 @@
 #!/bin/bash
-#type de données
-a=`cat meteo_filtered_data_v1.csv | wc -l`
 
+#-----------------DATA------------------------------
+a=`cat meteo_filtered_data_v1.csv | wc -l`
 while getopts "mhwt:p:" opt
 do 
     case $opt in
@@ -69,7 +69,7 @@ do
     esac
 done
 
-#lieux 
+#-----------------LOCATIONS---------------------------
 LOCK=0
 while getopts "FGSAOQ" opt
 do 
