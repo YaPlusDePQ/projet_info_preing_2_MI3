@@ -32,13 +32,13 @@ do
         tail -n$((a-1)) tmp1.csv >> temperature1.csv 
         rm tmp1.csv
     elif (($mode==2)) # mode 2 :
-        cat meteo_filtered_data_v1.csv | cut -d ';' -f1,2,11 --output-delimiter ';'  > tmp1.csv 
+        cat meteo_filtered_data_v1.csv | cut -d ';' -f2,11 --output-delimiter ';'  > tmp1.csv 
         head -n1 tmp1.csv > temperature2.csv
         tail -n$((a-1)) tmp1.csv >> temperature2.csv
         rm tmp1.csv
     then
     else #mode 3 : temperatures per date/hour 
-        cat meteo_filtered_data_v1.csv | cut -d ';' -f2,11 --output-delimiter ';'  > tmp1.csv 
+        cat meteo_filtered_data_v1.csv | cut -d ';' -f1,2,11 --output-delimiter ';'  > tmp1.csv 
         head -n1 tmp1.csv > temperature3.csv
         tail -n$((a-1)) tmp1.csv >> temperature3.csv
         rm tmp1.csv
