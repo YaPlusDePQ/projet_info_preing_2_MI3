@@ -70,6 +70,7 @@ do
 done
 
 #lieux 
+LOCK=0
 while getopts "FGSAOQ" opt
 do 
     case $opt in 
@@ -105,7 +106,11 @@ do
     ;;
     \?) echo "ERREUR! l'option lieu n'existe pas "
     esac
-    if (LOCK)
+    if [$LOCK -eq 1]
+    then 
+        break # PAS sure la !!!
+    else 
+        continue 
     fi 
 done 
 
