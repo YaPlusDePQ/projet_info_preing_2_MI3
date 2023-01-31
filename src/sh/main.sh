@@ -13,7 +13,7 @@ do
         rm tmp.csv
     ;;
     m) # moisture 
-        cat tmp0.csv | cut -d ';' -f1,10,11,6 --output-delimiter ';'  > tmp1.csv
+        cat tmp0.csv | cut -d ';' -f1,6,10,11 --output-delimiter ';'  > tmp1.csv
         head -n1 tmp1.csv > moisture.csv 
         tail -n$((a-1)) tmp1.csv >> moisture.csv 
         rm tmp1.csv
