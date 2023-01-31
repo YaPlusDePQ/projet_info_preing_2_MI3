@@ -10,11 +10,13 @@
 #include <stdbool.h>
 #include <string.h>
 #include <errno.h>
-// #include <math.h>
+#include <math.h>
 // #include <time.h>
 
 /* debug define and macro */
-#define DEBUG 1 //
+#define DEBUG 0 //
+
+#define MAX(a,b) (a > b ? a : b)
 
 #define DPRINTF(fmt, ...) if(DEBUG){printf(fmt __VA_OPT__(,) ##__VA_ARGS__);}
 #define ERR(code, format, ...) do{printf("*********ERROR (%d): ", code);printf(format __VA_OPT__(,) ##__VA_ARGS__);exit(code);}while(0)
@@ -34,9 +36,10 @@ Error code:
 */
 
 /* headers */
-#include "./ABR-AVL/node.h"
-#include "./ABR-AVL/abr.h"
-#include "./ABR-AVL/dataFmtg.h"
+#include "./ABR-AVL/tool.h"
+#include "./ABR-AVL/heightMoisture.h"
+#include "./ABR-AVL/tempPressure.h"
+#include "./ABR-AVL/wind.h"
 #include "./List/List.h"
 
 #endif

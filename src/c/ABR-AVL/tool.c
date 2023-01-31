@@ -50,19 +50,6 @@ long long int dateToInt(const char* date){
         return ( (year*365+monthToDay(month)+day)*24 + hour + utc )*3600; //date in second. every year are 365 day for simplification (no impact detected)
     }
     else{
-        ERR(210, "Failed to read data from %s", date);
+        ERR(210, "Failed to read date from %s", date);
     }
-}
-
-/**  
-*  \brief get the dataType from string.
-*
-*  \param source input string.
-*
-*  \return dataType of the string.
-*/
-dataType getDataTypeFromChar(const char* source){
-    if(strchr(source, '.') != NULL) return DEC; //test if decimal point
-    if(strchr(source, ':') != NULL) return DATE; //test if : for time separation
-    else return INT;
 }
