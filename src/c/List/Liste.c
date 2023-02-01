@@ -1,10 +1,5 @@
 #include "mainDefine.h"
 
-/*A faire :
--pour option 3, si la même date heure, trier par ID de station
-- c écrit dans un fichier .dat avec séparateur ' ' - fait
-*/
-
 // ------------ BASE LIST FUNCTIONS ------------ 
 
 List * ListCreation(long long int a, float b, float c, int lat, int lon){                //To create a list with it's first link (including 3 rows, latitude, longitude)
@@ -156,13 +151,20 @@ List * FileIntoList2(FILE * file, int op){                      //gets the 2 row
         i++;
         j++;
     }
-    if(op == 1){                                                //For the option 1
-        vv1 = atoi(v1);                                         //converts the char into a int
+    if(strlen(v1)==0 || strlen(v2)==0){   //To remove half-filled lines after
+        vv1 = -9999;                                //Sets the values like that to delete them after
+        vv2 = -9999;
     }
-    else if(op == 2){                                           //For the option 2
-        vv1 = dateToInt(v1);                                    //Converts the char into a long long int - (for Date/Hour)
+    else{
+        vv2 = atoi(v2);                                    //Convert a char into a long long int - (for Date/Hour)
+        if(op == 1){                                            //For the option 1 
+            vv1 = atoi(v1);                                     //converts the char into a int
+        }
+        else if(op == 2){                                       //For the option 2
+            vv1 = dateToInt(v1);                                //Converts the char into a long long int - (for Date/Hour)
+        }
     }
-    vv2 = atoi(v2);
+    
     List * plist = ListCreation(vv1,vv2,0,0,0);                 //Creation of the list with the values above
     while(!feof(file)){                                         //loop to fill the list with all the lines - same as the case of the second line
         if(file != NULL){                                       //verification
@@ -189,7 +191,19 @@ List * FileIntoList2(FILE * file, int op){                      //gets the 2 row
             else if(op == 2){                                   //For the option 2
                 vv1 = dateToInt(v1);                            //Converts the chat into a long long int - (for Date/Hour)
             }
-            vv2 = atoi(v2);        
+            if(strlen(v1)==0 || strlen(v2)==0){                 //To remove half-filled lines after
+                vv1 = -9999;                                    //Sets the values like that to delete them after
+                vv2 = -9999;
+            }
+            else{
+                if(op == 1){                                    //For the option 1 
+                    vv1 = atoi(v1);                             //converts the char into a int
+                }
+                else if(op == 2){                               //For the option 2
+                    vv1 = dateToInt(v1);                        //Converts the char into a long long int - (for Date/Hour)
+                }
+                vv2 = atoi(v2);                                 //Convert a char into a long long int - (for Date/Hour)
+            }      
             plist = ListInsertEnd(plist,vv1,vv2,0,0,0);         //Putting each line from the third one in the list
         }
     }
@@ -223,9 +237,16 @@ List * FileIntoList3(FILE * file){                              //gets the 3 row
         i++;
         k++;
     }
-    vv1 = atoi(v1);                                             //Converts a char into a int 
-    vv2 = dateToInt(v2);                                        //Convert a char into a long long int - (for Date/Hour)
-    vv3 = atoi(v3);
+    if(strlen(v1)==0 || strlen(v2)==0 || strlen(v3)==0){        //To remove half-filled lines after
+        vv1 = -9999;                                            //Sets the values like that to delete them after
+        vv2 = -9999;
+        vv3 = -9999;
+    }
+    else{
+        vv1 = atoi(v1);                                         //Converts a char into a int
+        vv2 = dateToInt(v2);                                    //Convert a char into a long long int - (for Date/Hour)
+        vv3 = atoi(v3);
+    }
     List * plist = ListCreation(vv2,vv1,vv3,0,0);
 
     while(!feof(file)){                                         //loop to fill the list with all the lines - same as the second line
@@ -253,9 +274,16 @@ List * FileIntoList3(FILE * file){                              //gets the 3 row
                 i++;
                 k++;
             }
-            vv1 = atoi(v1);                                      //Converts a char into a int 
-            vv2 = dateToInt(v2);                                 //Convert a char into a long long int - (for Date/Hour)
-            vv3 = atoi(v3);    
+            if(strlen(v1)==0 || strlen(v2)==0 || strlen(v3)==0){        //To remove half-filled lines after
+                vv1 = -9999;                                            //Sets the values like that to delete them after
+                vv2 = -9999;
+                vv3 = -9999;
+            }
+            else{
+                vv1 = atoi(v1);                                         //Converts a char into a int
+                vv2 = dateToInt(v2);                                    //Convert a char into a long long int - (for Date/Hour)
+                vv3 = atoi(v3);
+            }   
             plist = ListInsertEnd(plist,vv2,vv1,vv3,0,0);        //Putting each line from the third (not empty) one in the list
         }
     }
@@ -296,10 +324,18 @@ List * FileIntoList4(FILE * file, int op){                      //gets the 4 row
         i++;
         l++;
     }
-    vv1 = atoi(v1);                                 //Converts a char into a int
-    vv2 = atoi(v2);
-    vv3 = atoi(v3);
-    vv4 = atoi(v4);
+    if(strlen(v1)==0 || strlen(v2)==0 || strlen(v3)==0 || strlen(v4)==0){   //To remove half-filled lines after
+        vv1 = -9999;                                //Sets the values like that to delete them after
+        vv2 = -9999;
+        vv3 = -9999;
+        vv4 = -9999;
+    }
+    else{
+        vv1 = atoi(v1);                              //Converts a char into a int
+        vv2 = atoi(v2);
+        vv3 = atoi(v3);
+        vv4 = atoi(v4);
+    }
     if(op == 1){                                    //For height 
         plist = ListCreation(vv1,vv4,0,vv2,vv3);    //Creation of the list and moving the rows of place
     }
@@ -307,7 +343,6 @@ List * FileIntoList4(FILE * file, int op){                      //gets the 4 row
         plist = ListCreation(vv1,vv2,0,vv3,vv4);    //Creation of the list
     }
     
-
     while(!feof(file)){                             //loop to fill the list with all the lines
         if(file != NULL){                           //verification
             char v[100] = "", v1[100] = "", v2[100] = "", v3[100] = "", v4[100] = "";         
@@ -339,11 +374,18 @@ List * FileIntoList4(FILE * file, int op){                      //gets the 4 row
                 i++;
                 l++;
             }
-            vv1 = atoi(v1);                         //Converts a char into a int
-            vv1 = atoi(v1);                             
-            vv2 = atoi(v2);    
-            vv3 = atoi(v3); 
-            vv4 = atoi(v4);
+            if(strlen(v1)==0 || strlen(v2)==0 || strlen(v3)==0 || strlen(v4)==0){   //To remove half-filled lines after
+                vv1 = -9999;                          //Sets the values like that to delete them after
+                vv2 = -9999;
+                vv3 = -9999;
+                vv4 = -9999;
+            }
+            else{
+                vv1 = atoi(v1);                      //Converts a char into a int
+                vv2 = atoi(v2);
+                vv3 = atoi(v3);
+                vv4 = atoi(v4);
+            }
             if(op == 1){                            //For Height
                 plist = ListInsertEnd(plist,vv1,vv4,0,vv2,vv3);         //Putting each line from the third (not empty) one in the list
             }
@@ -395,11 +437,20 @@ List * FileIntoList5(FILE * file){                              //gets the 5 row
         i++;
         m++;
     }
-    vv1 = atoi(v1);                                             //Converts a char into a int
-    vv2 = atoi(v2);
-    vv3 = atof(v3);
-    vv4 = atoi(v4);
-    vv5 = atoi(v5);
+    if(strlen(v1)==0 || strlen(v2)==0 || strlen(v3)==0 || strlen(v4)==0 || strlen(v5)==0){   //To remove half-filled lines after
+        vv1 = -9999;                          //Sets the values like that to delete them after
+        vv2 = -9999;
+        vv3 = -9999;
+        vv4 = -9999;
+        vv5 = -9999;
+    }
+    else{
+        vv1 = atoi(v1);                      //Converts a char into a int
+        vv2 = atoi(v2);
+        vv3 = atoi(v3);
+        vv4 = atoi(v4);
+        vv5 = atoi(v5);
+    }
     List * plist = ListCreation(vv1,vv2,vv3,vv4,vv5);           //Creation of the list
 
     while(!feof(file)){                                         //loop to fill the list with all the lines
@@ -439,11 +490,20 @@ List * FileIntoList5(FILE * file){                              //gets the 5 row
                 i++;
                 m++;
             }
-            vv1 = atoi(v1);                                     //Converts a char into a int
-            vv2 = atoi(v2);    
-            vv3 = atof(v3); 
-            vv4 = atoi(v4);   
-            vv5 = atoi(v5);
+            if(strlen(v1)==0 || strlen(v2)==0 || strlen(v3)==0 || strlen(v4)==0 || strlen(v5)==0){   //To remove half-filled lines after
+                vv1 = -9999;                         //Sets the values like that to delete them after
+                vv2 = -9999;
+                vv3 = -9999;
+                vv4 = -9999;
+                vv5 = -9999;
+            }
+            else{
+                vv1 = atoi(v1);                      //Converts a char into a int
+                vv2 = atoi(v2);
+                vv3 = atoi(v3);
+                vv4 = atoi(v4);
+                vv5 = atoi(v5);
+            }              
             plist = ListInsertEnd(plist,vv1,vv2,vv3,vv4,vv5);   //Putting each line from the third (not empty) one in the list
         }
     }
@@ -465,17 +525,27 @@ FILE* ListIntoFile(List * plist,int option){                    //puts the wante
         switch(option){
             case 1 :                                    
                 fprintf(end,"%lld;%d;%d;%f\n",p->elem1,p->min,p->max,p->average);               //puts the first row, the min,max and average into the file - for option 1
+                break;
             case 2 :
                 fprintf(end,"%lld;%f\n",p->elem1,p->average);                                   //puts the first row and the average into the file - for option 2
+                break;
             case 3 :
                 fprintf(end,"%lld;%f;%f\n",p->elem1,p->elem2,p->elem3);                         //puts the three rows into the file - for option 3 
+                break;
             case 4 :
                 fprintf(end,"%lld;%f;%f;%d;%d\n",p->elem1,p->elem2,p->elem3,p->lat,p->lon);     //puts the three rows, the latitude and longitude into the file - for option wind
+                break;
             case 5 :
                 fprintf(end,"%lld;%f;%d;%d\n",p->elem1,p->elem2,p->lat,p->lon);                 //puts the two rows, the latitude and longitude into the file - for option height
+                break;
             case 6 :
                 fprintf(end,"%lld;%d;%d;%d\n",p->elem1,p->max,p->lat,p->lon);                   //puts the first row, the average, the latitude and longitude into the file - for the option moisture
+                break;
+            default : 
+                printf("error");
+                break;
         }
+
         p = p->next;
     }
     //fclose(end);                                        //Don't know if I do it there ?
@@ -590,7 +660,7 @@ long long int dateToInt(const char* date){
         return ( (year*365+monthToDay(month)+day)*24 + hour + utc )*3600; //date in second. every year are 365 day for simplification (no impact detected)
     }
     else{
-        ERR(210, "Failed to read data from %s", date);
+        //ERR(210, "Failed to read data from %s", date);
         printf("error\n\n");
     }
 }
@@ -678,7 +748,6 @@ int ChecksDoubleSortedAscending(List * plist){          //Returns 1 if the first
 }
 
 int ChecksDoubleSortedDescending(List * plist){         //Returns 1 if the first row isn't sorted in descending order and the second as well, return 0 if it is - for option 3
-    List * p = plist;
     List * p = plist;
     while(p->next != NULL){                             //Loop to go through the list
         if((p->elem1 == p->next->elem1) &&(p->elem2 < p->next->elem2)){
@@ -791,8 +860,8 @@ List * PreSortWind(List * plist){                                   //Creates a 
         List * tmp = PreCalculusWind(plist);                    
         occur = occurence(plist,plist->elem1);
         plist = DeleteAllOccurences(plist,plist->elem1,occur);                  //Deletes plist's links when used, it's why it isn't an infinite loop
-        f->elem2 = wind_x(tmp);
-        f->elem3 = wind_y(tmp);
+        f->elem2 = Average(tmp);
+        f->elem3 = Average3(tmp);
         free(tmp);
     } 
     return final;
@@ -959,7 +1028,6 @@ List * SortOption3(List *plist){                        //sorting the first row 
     }
     p = plist;
     tmp = plist->next;
-    printf("testtest\n");
     DisplayList(plist);
     while(ChecksDoubleSortedAscending(plist)){
         if((p->elem1 == p->next->elem1) && (p->elem2 > p->next->elem2)){
@@ -1259,3 +1327,4 @@ List * SortMoistureReverse(List *plist){               //sorting the second row 
     }
     return plist;
 }
+
