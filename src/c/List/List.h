@@ -56,11 +56,9 @@ int Min(List * plist);                      //Takes a second list with only one 
 
 int Max(List * plist);                      //Takes a second list with only one station and all it's values to fin the maximum (in the 1st row)
 
-float Average(List * plist);                //Takes a second list with only one station and all it's values to fin the average (in the 1st row)
+float Average(List * plist);                //
 
-float wind_x(List * plist);                 //Calculates the average of x - for the wind 
-
-float wind_y(List * plist);                 //Calculates the average of y - for the wind
+float Average3(List * plist);               //Takes a second list with only one station and all it's values to fin the average (in the 3rd row)
 
 int monthToDay(int month);                  //Converts months into days
 

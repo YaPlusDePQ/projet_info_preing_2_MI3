@@ -528,30 +528,17 @@ float Average(List * plist){                                    //Takes a second
     return moy;
 }
 
-float wind_x(List * plist){                                     //Calculates the average of the x - for the wind
+float Average3(List * plist){                                   //Takes a second list with only one station and all it's values to fin the average (in the 3rd row)
     List * p = plist;
-    float x=0,avx=0;
-    int compt=0;
-    while(p != NULL){                                           //Creates x sum with calculus into a loop
-        x += (cos(p->elem2))*(p->elem3);
+    int sum = 0, compt = 0;
+    float moy=0;
+    while(p != NULL){                                           //loop to go through the list
+        sum += p->elem3;
         compt++;
-        p=p->next;
+        p = p->next;
     }
-    avx = x / compt;                                            //Calculus of x's average
-    return avx;
-}
-
-float wind_y(List * plist){                                     //Calculates the x average of the y - for the wind
-    List * p = plist;
-    float y=0,avy=0;
-    int compt=0;
-    while(p != NULL){                                           //Creates y sum with calculus into a loop
-        y += (sin(p->elem2))*(p->elem3);
-        compt++;
-        p=p->next;
-    }
-    avy = y / compt;                                            //Calculus of y's average
-    return avy;
+    moy = sum / compt;                                          //To calcul the average 
+    return moy;
 }
 
 /**
@@ -795,8 +782,8 @@ List * PreSortWind(List * plist){                                   //Creates a 
     List * tmp = PreCalculusWind(plist);                                        //Gets the first tmp list
     int occur = occurence(plist,plist->elem1);
     plist = DeleteAllOccurences(plist,plist->elem1,occur);                      //Deletes the values we processed, because they won't be needed anymore
-    final->elem2 = wind_x(tmp);                                                 //fill the final list with tmp's calculus
-    final->elem3 = wind_y(tmp);
+    final->elem2 = Average(tmp);                                                //fill the final list with tmp's calculus
+    final->elem3 = Average3(tmp);
     List * f = final;   
     while(plist != NULL){                                                       //Repeats the action for every tmp list
         final = ListInsertEnd(final,plist->elem1,0,0,plist->lat,plist->lon);
@@ -810,6 +797,7 @@ List * PreSortWind(List * plist){                                   //Creates a 
     } 
     return final;
 } 
+
 
     //For temperatures and pressions
 
