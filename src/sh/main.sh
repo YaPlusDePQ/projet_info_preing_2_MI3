@@ -64,7 +64,7 @@ case $opt in
     p)arg_p=1
     mode=$OPTARG
     ;;
-    \?) echo "ERROR"
+    \?) echo "ERROR! Command not found. Use command --help for the man"
     esac
 done 
 sed 's/,/;/g' $a > tmp0.csv #Splitting column $10 into two columns 
