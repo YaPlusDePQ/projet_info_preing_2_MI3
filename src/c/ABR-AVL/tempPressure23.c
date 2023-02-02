@@ -10,7 +10,7 @@ dateNode* newDateNode(const char* date, long long int dateint, int station, floa
     newNode->stationTree = newStationNode(station, value);
     newNode->lc = NULL;
     newNode->rc = NULL;
-    DPRINTF("[newStationNode] datestr:%s dateint:%64I stationTree:%p", newNode->datestr, newNode->dateint, newNode->stationTree);
+    DPRINTF("[newStationNode] datestr:%s dateint:%I64d stationTree:%p", newNode->datestr, newNode->dateint, newNode->stationTree);
     return newNode;
 }
 
