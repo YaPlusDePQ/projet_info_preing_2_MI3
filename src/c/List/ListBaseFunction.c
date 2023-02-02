@@ -31,10 +31,10 @@ void DisplayList(List * plist){             //To display the list
     List * p = plist;
     while(p != NULL){                       //Loop to go until the end of the list
         if(p->next == NULL){
-            printf("%lld; %f; %f; min : %d; max : %d; av : %f; lat : %d; lon : %d\n\n", p->elem1,p->elem2,p->elem3,p->min,p->max,p->average,p->lat,p->lon);
+            printf("%I64d; %f; %f; min : %d; max : %d; av : %f; lat : %d; lon : %d\n\n", p->elem1,p->elem2,p->elem3,p->min,p->max,p->average,p->lat,p->lon);
         }
         else{
-            printf("%lld; %f; %f; min : %d; max : %d; av : %f; lat : %d; lon : %d   ->\n", p->elem1,p->elem2,p->elem3,p->min,p->max,p->average,p->lat,p->lon);
+            printf("%I64d; %f; %f; min : %d; max : %d; av : %f; lat : %d; lon : %d   ->\n", p->elem1,p->elem2,p->elem3,p->min,p->max,p->average,p->lat,p->lon);
         }
         p = p->next;
     }
