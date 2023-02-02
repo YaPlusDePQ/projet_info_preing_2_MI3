@@ -42,8 +42,8 @@ Error code:
 #include "./ABR-AVL/wind.h"
 #include "./List/ListBaseFunction.h"
 #include "./List/ListCalculus.h"
-#include "./List/ListSort.h"
 #include "./List/PreSortList.h"
+#include "./List/ListSort.h"
 #include "./List/ListFile.h"
 #include "./List/ListOptions.h"
 
