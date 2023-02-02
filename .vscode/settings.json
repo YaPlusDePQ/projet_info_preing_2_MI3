@@ -3,6 +3,8 @@
         "abr.h": "c",
         "maindefine.h": "c",
         "datafmtg.h": "c",
-        "node.h": "c"
+        "node.h": "c",
+        "listoptions.h": "c",
+        "list.h": "c"
     }
 }
