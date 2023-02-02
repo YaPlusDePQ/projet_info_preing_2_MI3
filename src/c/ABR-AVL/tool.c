@@ -47,7 +47,7 @@ long long int dateToInt(const char* date){
     int hour = -1;
     int utc = -1;
     if(sscanf(date, "%d-%d-%dT%d:00:00+%d:00", &year, &month, &day, &hour, &utc) == 5){ //test if data get collected
-        return ( (year*365+monthToDay(month)+day)*24 + hour + utc )*3600; //date in second. every year are 365 day for simplification (no impact detected)
+        return ( (year*365+monthToDay(month)+day)*24 + hour + utc ); //date in second. every year are 365 day for simplification (no impact detected)
     }
     else{
         ERR(210, "Failed to read date from %s", date);
