@@ -105,7 +105,6 @@ long long int dateToInt(const char* date){
         return ( (year*365+monthToDay(month)+day)*24 + hour + utc )*3600; //date in second. every year are 365 day for simplification (no impact detected)
     }
     else{
-        //ERR(210, "Failed to read data from %s", date);
-        printf("error\n\n");
+        ERR(210, "Failed to read data from %s", date);
     }
 }
