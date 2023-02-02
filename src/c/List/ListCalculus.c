@@ -1,4 +1,4 @@
-#include "mainDefine.h"
+#include "../mainDefine.h"
 
 int Min(List * plist){                                          //Takes a second list with only one station and all it's values to fin the minimum (int the 1st row) 
     List * p = plist;

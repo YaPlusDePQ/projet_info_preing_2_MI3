@@ -1,4 +1,4 @@
-#include "mainDefine.h"
+#include "../mainDefine.h"
 
 int ChecksSortedAscending(List * plist){                //Returns 1 if it isn't sorted in ascending order, 0 if it is - checking the first element - for options 1,2,3 and wind
     List * p = plist;

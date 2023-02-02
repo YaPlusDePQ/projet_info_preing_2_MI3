@@ -1,4 +1,4 @@
-#include "mainDefine.h"
+#include "../mainDefine.h"
 
 
 void Option1(char * input,char * output,int r){

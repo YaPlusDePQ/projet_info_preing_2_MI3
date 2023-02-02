@@ -1,4 +1,4 @@
-#include "mainDefine.h"
+#include "../mainDefine.h"
 
 List * FileIntoList2(FILE * file, int op){                      //gets the 2 rows into the list, the 2 rows are into one link - for options 1 (op=1) and option 2 (op=2)
     char v[100] = "", v1[100] = "", v2[100] = "";               //char that will get the second row

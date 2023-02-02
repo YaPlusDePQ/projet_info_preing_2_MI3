@@ -1,4 +1,4 @@
-#include "mainDefine.h"
+#include "../mainDefine.h"
 
 List * ListCreation(long long int a, float b, float c, int lat, int lon){                //To create a list with it's first link (including 3 rows, latitude, longitude)
     List * p = malloc(sizeof(List));                    //Creation with a malloc
