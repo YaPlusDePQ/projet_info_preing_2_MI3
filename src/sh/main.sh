@@ -1,25 +1,4 @@
 #!/bin/bash 
-
-
-for arg in $@
-do 
-    case $arg in 
-        --abr)
-        sortn='abr'
-        ;;
-        --avl)
-        sortn= 'avl'
-        ;;
-        --tab)
-        sortn='tab'
-        ;;
-        --help)
-        cat man.txt
-        exit 1
-        ;;
-        \?) echo "ERROR"
-    esac
-done
 #initialization
 arg_F=0
 arg_A=0
@@ -33,40 +12,94 @@ arg_w=0
 arg_t=0
 arg_p=0
 arg_d=0
-while getopts "FAGOQShmwf:t:p:" opt
+arg_f=0
+
+while [ $# -ne 0 ]
 do 
-case $opt in 
-    f) 
-        a=$OPTARG
-        b=$OPTARG
-    ;;
-    F)arg_F=1
-    ;;
-    A) arg_A=1
-    ;;
-    G) arg_G=1
-    ;;
-    O) arg_O=1
-    ;;
-    Q)arg_Q=1
-    ;;
-    S)arg_S=1
-    ;;
-    h)arg_h=1
-    ;;
-    m)arg_m=1
-    ;;
-    w)arg_w=1
-    ;;
-    t)arg_t=1
-    mode=$OPTARG
-    ;;
-    p)arg_p=1
-    mode=$OPTARG
-    ;;
-    \?) echo "ERROR! Command not found. Use command --help for the man"
+    case $1 in
+        --abr)
+            sortn="abr"
+            shift
+            ;;
+        --avl)
+            sortn= "avl"
+            shift
+            ;;
+        --tab)
+            sortn="tab"
+            shift 
+        ;;
+        --help)
+            less man.txt
+            shift
+            ;;
+        -f)
+            arg_f=1
+            a="$2"
+            b="$2"  
+            shift
+            shift
+            ;;
+        -F)
+            arg_F=1
+            shift
+            ;;
+        -A) 
+            arg_A=1
+            shift
+            ;;
+        -G) 
+            arg_G=1
+            shift
+            ;;
+        -O) 
+            arg_O=1
+            shift 
+            ;;
+        -Q)
+            arg_Q=1
+            shift
+            ;;
+        -S)
+            arg_S=1
+            shift
+            ;;
+        -h)
+            arg_h=1
+            shift
+        ;;
+        -m)
+            arg_m=1
+            shift
+            ;;
+        -w)
+            arg_w=1
+            shift
+            ;;
+        -t)
+            arg_t=1
+            mode=$2
+            shift
+            shift
+            ;;
+        -p)
+            arg_p=1
+            mode=$2
+            shift
+            shift
+            ;;
+        *) echo "ERROR! Command not found($1). Use command --help for the man"
+            exit 1
+            ;;
     esac
 done 
+
+if [ $arg_f -eq 0 ]
+then
+    echo "ERROR! file not found. Use command --help for the man"
+    exit 1
+fi
+
 sed 's/,/;/g' $a > tmp0.csv #Splitting column $10 into two columns 
 a="tmp0.csv"
 sed 's/,/;/g' $a > tmp1.csv #Splitting column $10 into two columns
@@ -74,7 +107,6 @@ b="tmp1.csv"
 #------------------------------LOCATIONS----------------------------------------------------
 if (($arg_A == 1 ))#--------------------------------ANTILLES------------------------------------
 then
-    head -n1 $a > Antilles.csv
     awk -F ";" '9.5<=$10 && $10<=22.1 && -76.03<=$11 && $11<=-53.03 {print $0}' $a >> Antilles.csv
     b="Antilles.csv"   
 elif (($arg_F == 1))#-----------------FRANCE METROPOLITAINE & CORSE--------------------------------
@@ -174,5 +206,5 @@ then
         tail -n$((nt-1)) tmp.csv >> pression3.csv 
         rm tmp.csv
     fi
-fi  
+fi
 exit 0
