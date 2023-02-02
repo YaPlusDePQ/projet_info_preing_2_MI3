@@ -125,4 +125,5 @@ List * DeleteAllOccurences(List * plist, int sup, int occur){   //Deletes all th
     }
     plist = Del(p,sup);                                         //calling del to delete one occurence
     plist = DeleteAllOccurences(plist,sup,occur-1);             //recursive call of the function to repeat
+    return plist;
 }
