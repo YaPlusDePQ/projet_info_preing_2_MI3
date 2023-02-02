@@ -4,8 +4,8 @@
 typedef struct windNode windNode;
 struct windNode{
     int station;
-    float tVectorX;
-    float tVectorY;
+    float tDirection;
+    float tSpeed;
     int avgc;
     windNode* lc;
     windNode* rc;

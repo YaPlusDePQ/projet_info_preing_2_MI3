@@ -24,15 +24,15 @@
 /* 
 Error code:
 1xx: allocation
-    10x /ABR-AVL/node.c
-    11x /ABR-AVL/dataFmtg.c
+    10x /ABR-AVL/heightMoisture.c
+    11x /ABR-AVL/tempPressure.c
     12x /ABR-AVL/abr.c
 2xx: failed to read
-    20x /ABR-AVL/node.c
+    20x /ABR-AVL/heightMoisture.c
     21x /ABR-AVL/dataFmtg.c
     22x /ABR-AVL/abr.c
 3xx: failed to write
-    30x /ABR-AVL/abr.c
+    30x /ABR-AVL/heightMoisture.c
 */
 
 /* headers */

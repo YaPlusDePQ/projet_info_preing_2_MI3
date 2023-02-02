@@ -9,19 +9,19 @@
 *
 *  \return pointer to the new node.
 */
-windNode* newWindNode(int station, float vectorX, float vetcorY, const char* coord){
+windNode* newWindNode(int station, float direction, float speed, const char* coord){
     windNode* newNode = malloc(sizeof(windNode));
     if(newNode==NULL) ERR(4, "newWindNode memory allocation failed.\n");
     newNode->lc = NULL;
     newNode->rc = NULL;
     newNode->station = station;
-    newNode->tVectorX = vectorX;
-    newNode->tVectorY = vetcorY;
+    newNode->tDirection = direction;
+    newNode->tSpeed = speed;
     newNode->avgc = 1;
     newNode->hl = 0;
     newNode->hr = 0;
     strcpy(newNode->coord, coord);
-    DPRINTF("[newHMNode] [%d]: %f %f %s\n",newNode->station, newNode->tVectorX, newNode->tVectorY, newNode->coord);
+    DPRINTF("[newHMNode] [%d]: %f %f %s\n",newNode->station, newNode->tDirection, newNode->tSpeed, newNode->coord);
     return newNode;
 }
 
@@ -119,25 +119,25 @@ windNode* BalanceWindNodeTree(windNode* head){
 
 /* -------------------------------------------- sorting functions --------------------------------------------*/
 
-windNode* compileWindData(windNode* head, int station, float vectorX, float vetcorY, const char* coord){
-    if(head == NULL) return newWindNode(station, vectorX, vetcorY, coord);
+windNode* compileWindData(windNode* head, int station, float direction, float speed, const char* coord){
+    if(head == NULL) return newWindNode(station, direction, speed, coord);
     
     if(head->station == station) {
         DPRINTF("[compileWindData] updating existing node ");
-        head->tVectorX += vectorX;
-        head->tVectorY += vetcorY; 
+        head->tDirection += direction;
+        head->tSpeed += speed; 
         head->avgc++;
         if( !strcmp(head->coord, "")) strcpy(head->coord, coord);
         return head;
     }
 
     if(station <= head->station){
-        if(head->lc != NULL) compileWindData(head->lc, station, vectorX, vetcorY, coord);
-        else head->lc = newWindNode(station, vectorX, vetcorY, coord);
+        if(head->lc != NULL) compileWindData(head->lc, station, direction, speed, coord);
+        else head->lc = newWindNode(station, direction, speed, coord);
     }
     else{
-        if(head->rc != NULL) compileWindData(head->rc, station, vectorX, vetcorY, coord);
-        else head->rc = newWindNode(station, vectorX, vetcorY, coord);
+        if(head->rc != NULL) compileWindData(head->rc, station, direction, speed, coord);
+        else head->rc = newWindNode(station, direction, speed, coord);
     }
 
     return head;
@@ -145,13 +145,13 @@ windNode* compileWindData(windNode* head, int station, float vectorX, float vetc
 
 void _writeInFileDescendingW(FILE* file, windNode* current){
     if(current->rc != NULL) _writeInFileDescendingW(file, current->rc);
-    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tVectorX/current->avgc, current->tVectorY/current->avgc, current->coord) < 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
     if(current->lc != NULL) _writeInFileDescendingW(file, current->lc);
 }
 
 void _writeInFileAscendingW(FILE* file, windNode* current){
     if(current->lc != NULL) _writeInFileAscendingW(file, current->lc);
-    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tVectorX/current->avgc, current->tVectorY/current->avgc, current->coord) < 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
     if(current->rc != NULL) _writeInFileAscendingW(file, current->rc);
 }
 
@@ -176,7 +176,7 @@ int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int des
         strcpy(coord, "");
         
         if(sscanf(line,"%d;%f;%f;%[^\n]",&station, &windDirection, &windSpeed, coord) == 0) ERR(1, "Can't read data in line %d.\n", info);// @EDIT FOR ORDER
-        windTree = compileWindData(windTree, station, cos(windDirection)*windSpeed, sin(windDirection)*windSpeed, coord);
+        windTree = compileWindData(windTree, station, windDirection, windSpeed, coord);
         printf("\r[WindModeABRAVL] Compiling data %d/?", info);
 
         if(avl){
