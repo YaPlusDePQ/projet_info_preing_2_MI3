@@ -92,7 +92,7 @@ void Option3(char * input,char * output,int r){
         printf("error message = %s \n",strerror(errno));
         exit(3);
     }
-	end = ListIntoFile2(plist,end);
+	ListIntoFile2(plist,end);
     free(plist);
     fclose(file);
     fclose(end);
