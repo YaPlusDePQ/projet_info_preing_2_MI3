@@ -17,8 +17,8 @@ int main(int argc, char **argv){
 
     switch(mode[1]){
         case 'm':
-            if(!strcmp(type, "--abr")) HeightMoistureModeABRAVL(sourcePath, outPath, MOISTUREMODE, 0, isReversed);
-            if(!strcmp(type, "--avl")) HeightMoistureModeABRAVL(sourcePath, outPath, MOISTUREMODE, 1, isReversed);
+            if(!strcmp(type, "--abr")) HeightMoistureModeABRAVL(sourcePath, outPath, MOISTUREMODE, 0, !isReversed);
+            if(!strcmp(type, "--avl")) HeightMoistureModeABRAVL(sourcePath, outPath, MOISTUREMODE, 1, !isReversed);
             else Moisture(sourcePath, outPath,isReversed);
             break;
         case 'h':
