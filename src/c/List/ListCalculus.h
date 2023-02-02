@@ -7,7 +7,7 @@ int Min(List * plist);                      //Takes a second list with only one 
 
 int Max(List * plist);                      //Takes a second list with only one station and all it's values to fin the maximum (in the 1st row)
 
-float Average(List * plist);                //
+float Average(List * plist);                //Takes a second list with only one station and all it's values to fin the average (in the 1st row)
 
 float Average3(List * plist);               //Takes a second list with only one station and all it's values to fin the average (in the 3rd row)
 

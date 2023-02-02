@@ -12,5 +12,5 @@ List * FileIntoList5(FILE * file);                      //gets the 5 rows into t
 
 FILE* ListIntoFile(List * plist, FILE * end, int option);           //puts the wanted rows into a .dat file - for every option except option 3
 
-FILE* ListIntoFile1(List * plist, FILE * end, int option);           //puts the wanted rows into a .dat file - for option 3
+FILE* ListIntoFile2(List * plist, FILE * end);           //puts the wanted rows into a .dat file - for option 3
 #endif
