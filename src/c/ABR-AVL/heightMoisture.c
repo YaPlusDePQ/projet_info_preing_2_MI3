@@ -299,19 +299,21 @@ int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mo
         info++; //update debug
         value = 0;
         station = 0;
+        int sscanfr = 0;
         strcpy(coord, "");
         
         switch(mode){
             case HEIGHTMODE: //height
-                if(sscanf(line,"%d;%f;%f;%d",&station, &x, &y, &value) == 0) ERR(200, "Can't read data in line %d.\n", info);// @EDIT FOR ORDER
+                sscanfr = sscanf(line,"%d;%f;%f;%d",&station, &x, &y, &value);// @EDIT FOR ORDER
                 break;
             case MOISTUREMODE: //moisture
-                if(sscanf(line,"%d;%d;%f;%f",&station, &value, &x, &y) == 0) ERR(201, "Can't read data in line %d.\n", info);// @EDIT FOR ORDER
+                sscanfr = sscanf(line,"%d;%d;%f;%f",&station, &value, &x, &y);// @EDIT FOR ORDER
                 break;
         }
         
         sprintf(coord, "%f;%f", x,y); //write x and y into coord
-        HMTree = compileHMData(HMTree, station, value, coord); //add the new datas
+        if(sscanfr == 4) HMTree = compileHMData(HMTree, station, value, coord); //add the new datas
+        if(sscanfr == 0) ERR(200, "Can't read data in line %d.\n", info);
         printf("\r[HeightMoistureModeABRAVL] Compiling data %d/?     ", info);
 
         if(avl){ //balance the tree if AVL mode
