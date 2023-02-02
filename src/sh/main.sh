@@ -114,11 +114,11 @@ if (($arg_A == 1 ))#--------------------------------ANTILLES--------------------
 then
     awk -F ";" '9.5<=$10 && $10<=22.1 && -76.03<=$11 && $11<=-53.03 {print $0}' $a >> Antilles.csv
     b="Antilles.csv"   
-elif (($arg_F == 1))#-----------------FRANCE METROPOLITAINE & CORSE--------------------------------
+elif (($arg_F == 1))#-----------------FRANCE & CORSICA--------------------------------
 then 
     awk -F ";" ' 41<=$10 && $10<=52 && -5.5<=$11 && $11<=9.4 {print $0;} ' $a   > france.csv
     b="france.csv"
-elif (($arg_G == 1)) #---------------------GUYANE FRANCAISE---------------------------------------
+elif (($arg_G == 1)) #---------------------FRENCH GYANA---------------------------------------
 then 
     awk -F ";" ' 2.1<=$10 && $10<=5.9 && -54.7<=$11 && $11<=-51 {print $0} ' $a  > guyane.csv
     b="guyane.csv"
@@ -126,12 +126,12 @@ elif (($arg_S == 1))#-----------------------SAINT-PIERRE ET MIQUELON -----------
 then 
     awk -F ";" ' 46.6<=$10 && $10<=47.1 && -56.5<=$11 && $11<=-56 {print $0} ' $a  > saint_pierre.csv
     b="saint_pierre.csv"
-elif (($arg_O == 1))#---------------------------OCEAN INDIEN---------------------------
+elif (($arg_O == 1))#---------------------------INDIAN OCEAN---------------------------
 then
 
     awk -F ";" ' -60.6<=$10 && $10<=8.16 && 28.3<=$11 && $11<=132.9 {print $0} ' $a  > oc_indien.csv
     b="oc_indien.csv"
-elif (($arg_Q == 1))#------------------------------ANTARTIQUE----------------------
+elif (($arg_Q == 1))#------------------------------ANTARTIC----------------------
 then 
     awk -F ";" ' -63.5<=$10 && $10<=-57.6 && -172<=$11 && $11<=17.4 {print $0} '  $a  > antartique.csv
     b="antartique.csv"
@@ -153,6 +153,7 @@ then
         else 
             ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -h 
         fi 
+        gnuplot "test.csv" -persist
     elif ("$sortn"="avl")
     then 
         if [$arg_r -eq 1 ]
@@ -161,6 +162,7 @@ then
         else 
             ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -h 
         fi 
+        gnuplot "test.csv" -persist
     else 
         if [$arg_r -eq 1 ]
         then 
@@ -168,6 +170,7 @@ then
         else 
             ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -h 
         fi 
+        gnuplot "test.csv" -persist
     fi 
 fi   
 
@@ -186,6 +189,7 @@ then
         else 
             ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -m 
         fi 
+        gnuplot "test.csv" -persist
     elif ("$sortn"="avl")
     then 
         if [$arg_r -eq 1 ]
@@ -194,6 +198,7 @@ then
         else 
             ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -m 
         fi 
+        gnuplot "test.csv" -persist
     else 
         if [$arg_r -eq 1 ]
         then 
@@ -201,9 +206,10 @@ then
         else 
             ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -m 
         fi 
+        gnuplot "test.csv" -persist
     fi 
 fi  
-if (($arg_w == 1))#------------------------wind----------------------
+if (($arg_w == 1))#------------------------WIND----------------------
 then 
     cut -d ';' -f1,4,5,10,11 --output-delimiter ';' $b > tmp.csv
     nt=`cat $b | wc -l`
@@ -218,6 +224,7 @@ then
         else 
             ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -w
         fi 
+        gnuplot "test.csv" -persist
     elif ("$sortn"="avl")
     then 
         if [$arg_r -eq 1 ]
@@ -226,6 +233,7 @@ then
         else 
             ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -w
         fi 
+        gnuplot "test.csv" -persist
     else 
         if [$arg_r -eq 1 ]
         then 
@@ -233,11 +241,12 @@ then
         else 
             ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -w 
         fi 
+        gnuplot "test.csv" -persist
     fi 
 fi  
 if (($arg_t == 1)) #--------------------Temperature--------------------
 then 
-    if (($mode == 1)) #-------------------mode 1------------------------
+    if (($mode == 1)) #---------------------------------------MODE 1----------------------------------------------
     then 
         cut -d ';' -f1,12 --output-delimiter ';' $b  > tmp.csv
         nt=`cat $b | wc -l`
@@ -252,6 +261,7 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t1
             fi 
+            gnuplot "test.csv" -persist
         elif ("$sortn"="avl")
         then 
             if [$arg_r -eq 1 ]
@@ -260,6 +270,7 @@ then
             else 
                 ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t1
             fi 
+            gnuplot "test.csv" -persist
         else 
             if [$arg_r -eq 1 ]
             then 
@@ -267,9 +278,9 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t1 
             fi 
+            gnuplot "test.csv" -persist
         fi 
-    fi   
-    elif (($mode == 2)) #----------------mode 2----------------
+    elif (($mode == 2)) #-------------------------------MODE 2-----------------------------------------------
     then
         cut -d ';' -f2,12 --output-delimiter ';' $b  > tmp.csv 
         nt=`cat $b | wc -l`
@@ -283,7 +294,8 @@ then
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t2 -r
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t2
-            fi 
+            fi
+            gnuplot "test.csv" -persist 
         elif ("$sortn"="avl")
         then 
             if [$arg_r -eq 1 ]
@@ -292,6 +304,7 @@ then
             else 
                 ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t2
             fi 
+            gnuplot "test.csv" -persist
         else 
             if [$arg_r -eq 1 ]
             then 
@@ -299,8 +312,9 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t2 
             fi 
+            gnuplot "test.csv" -persist
         fi 
-    else #------------------------------mode 3--------------------------
+    else #-------------------------------------------MODE 3 -----------------------------------------------------
         cut -d ';' -f1,2,12 --output-delimiter ';' $b > tmp.csv 
         nt=`cat $b | wc -l`
         echo "ID OMM station;Date;Température (°C)" > temperature3.csv
@@ -314,6 +328,7 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t3
             fi 
+            gnuplot "test.csv" -persist
         elif ("$sortn"="avl")
         then 
             if [$arg_r -eq 1 ]
@@ -322,6 +337,7 @@ then
             else 
                 ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t3
             fi 
+            gnuplot "test.csv" -persist
         else 
             if [$arg_r -eq 1 ]
             then 
@@ -329,12 +345,13 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t3
             fi 
+            gnuplot "test.csv" -persist
         fi 
     fi
 fi  
-if (($arg_p == 1))#----------------------Pression---------------------
+if (($arg_p == 1))#----------------------------------Pression----------------------------------
 then 
-    if (($mode == 1)) #---------------------mode 1---------------- 
+    if (($mode == 1)) #------------------------------------MODE 1------------------------------------------ 
     then 
         cut -d ';' -f1,3,7,8 --output-delimiter ';'  $b > tmp.csv 
         nt=`cat $b | wc -l`
@@ -349,6 +366,7 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p1
             fi 
+            gnuplot "test.csv" -persist
         elif ("$sortn"="avl")
         then 
             if [$arg_r -eq 1 ]
@@ -357,6 +375,7 @@ then
             else 
                 ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p1
             fi 
+            gnuplot "test.csv" -persist
         else 
             if [$arg_r -eq 1 ]
             then 
@@ -364,8 +383,9 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p1 
             fi 
+            gnuplot "test.csv" -persist
         fi 
-    elif (($mode == 2)) #------------------mode 2----------------
+    elif (($mode == 2)) #------------------------------------------MODE 2--------------------------------------------------
     then
         cut -d ';' -f2,7 --output-delimiter ';' $b > tmp.csv 
         nt=`cat $b | wc -l`
@@ -380,6 +400,7 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p2
             fi 
+            gnuplot "test.csv" -persist
         elif ("$sortn"="avl")
         then 
             if [$arg_r -eq 1 ]
@@ -388,6 +409,7 @@ then
             else 
                 ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p2
             fi 
+            gnuplot "test.csv" -persist
         else 
             if [$arg_r -eq 1 ]
             then 
@@ -395,8 +417,9 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p2 
             fi 
+            gnuplot "test.csv" -persist
         fi 
-    else #-----------------------mode 3----------------------
+    else #------------------------------------------MODE 3-----------------------------------------------
         cut -d ';' -f1,2,7 --output-delimiter ';' $b  > tmp.csv 
         nt=`cat $b | wc -l`
         echo "ID OMM station;Date;Pression station" > pression3.csv
@@ -410,6 +433,7 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p3
             fi 
+            gnuplot "test.csv" -persist
         elif ("$sortn"="avl")
         then 
             if [$arg_r -eq 1 ]
@@ -418,6 +442,7 @@ then
             else 
                 ./exec --avl -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p3
             fi 
+            gnuplot "test.csv" -persist
         else 
             if [$arg_r -eq 1 ]
             then 
@@ -425,6 +450,7 @@ then
             else 
                 ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p3 
             fi 
+            gnuplot "test.csv" -persist
         fi 
     fi
 fi
