@@ -382,16 +382,13 @@ List * FileIntoList5(FILE * file){                              //gets the 5 row
 
 FILE* ListIntoFile(List * plist,FILE * end,int option){                    //puts the wanted rows into a .dat file - for every option
     List * p = plist;
-    while(p != NULL){                                           //loop on each link of the list to fill the returning file
+    while(p->next != NULL){                                           //loop on each link of the list to fill the returning file
         switch(option){
             case 1 :                                    
                 fprintf(end,"%I64d;%d;%d;%f\n",p->elem1,p->min,p->max,p->average);               //puts the first row, the min,max and average into the file - for option 1
                 break;
             case 2 :
                 fprintf(end,"%I64d;%f\n",p->elem1,p->average);                                   //puts the first row and the average into the file - for option 2
-                break;
-            case 3 :
-                fprintf(end,"%I64d;%f;%f\n",p->elem1,p->elem2,p->elem3);                         //puts the three rows into the file - for option 3 
                 break;
             case 4 :
                 fprintf(end,"%I64d;%f;%f;%d;%d\n",p->elem1,p->elem2,p->elem3,p->lat,p->lon);     //puts the three rows, the latitude and longitude into the file - for option wind
@@ -412,5 +409,18 @@ FILE* ListIntoFile(List * plist,FILE * end,int option){                    //put
     return end;                                     
 }
 
+FILE * ListIntoFile(List * plist, FILE * end){
+    List * p = plist;
+    while(p->next != NULL){
+        if(p->elem1 != p->next->elem1){
+            fprintf(end,"%I64d;%f;%f\n\n\n",p->elem1,p->elem2,p->elem3);                      //puts the three rows into the file - for option 3 
+        }
+        else{
+            fprintf(end,"%I64d;%f;%f\n",p->elem1,p->elem2,p->elem3);                         //puts the three rows into the file - for option 3 
+        }
+        p = p->next;
+    }
+    fprintf(end,"%I64d;%f;%f\n",p->elem1,p->elem2,p->elem3);                                 //puts the three rows into the file - for option 3 
+}
 
 

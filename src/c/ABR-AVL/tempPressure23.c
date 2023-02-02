@@ -10,7 +10,7 @@ dateNode* newDateNode(const char* date, long long int dateint, int station, floa
     newNode->stationTree = newStationNode(station, value);
     newNode->lc = NULL;
     newNode->rc = NULL;
-    DPRINTF("[newStationNode] datestr:%s dateint%64I64i stationTree:%p", newNode->datestr, newNode->dateint, newNode->stationTree);
+    DPRINTF("[newStationNode] datestr:%s dateint:%64I stationTree:%p", newNode->datestr, newNode->dateint, newNode->stationTree);
     return newNode;
 }
 
@@ -149,6 +149,7 @@ void _writeInFileDescendingTP23(FILE* file, int mode, dateNode* current){
             break;
         case 3:
             _writeInFileStationTreeTP23(file, current->datestr, current->stationTree);
+            fputs("\n\n", file);
             break;
     }
     if(current->lc != NULL) _writeInFileDescendingTP23(file, mode, current->lc);
@@ -162,6 +163,7 @@ void _writeInFileAscendingTP23(FILE* file, int mode, dateNode* current){
             break;
         case 3:
             _writeInFileStationTreeTP23(file, current->datestr, current->stationTree);
+            fputs("\n\n", file);
             break;
     }
     if(current->rc != NULL) _writeInFileAscendingTP23(file, mode, current->rc);
