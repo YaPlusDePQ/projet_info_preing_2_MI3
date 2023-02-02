@@ -27,7 +27,7 @@ void Option1(char * input,char * output,int r){
         printf("error message = %s \n",strerror(errno));
         exit(3);
     }
-	end = ListIntoFile(final,end,1);
+	ListIntoFile(final,end,1);
     free(final);
     free(plist);
     fclose(file);
@@ -188,7 +188,7 @@ void Moisture(char * input,char * output,int r){
         printf("error message = %s \n",strerror(errno));
         exit(3);
     }
-	end = ListIntoFile(final,6);
+	ListIntoFile(final, end, 6);
     free(final);
     free(plist);
     fclose(file);

@@ -195,7 +195,7 @@ int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int des
     FILE* out = fopen(outPath, "w");
     if(out == NULL) ERR(120, "Failed to create file '%s'", outPath);
 
-    fputs("ID OMM station;Vecteur X; Vecteur Y;X;Y\n", out);
+    fputs("ID OMM station;direction moyenne; vitesse moyenne;X;Y\n", out);
 
     printf("[WindModeABRAVL] writting data\n");
     if(descending) _writeInFileDescendingW(out, windTree);
