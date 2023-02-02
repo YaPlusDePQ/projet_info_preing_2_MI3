@@ -173,10 +173,12 @@ int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int des
         station = 0;
         windDirection = 0;
         windSpeed = 0;
+        int sscanfr = 0;
         strcpy(coord, "");
         
-        if(sscanf(line,"%d;%f;%f;%[^\n]",&station, &windDirection, &windSpeed, coord) == 0) ERR(1, "Can't read data in line %d.\n", info);// @EDIT FOR ORDER
-        windTree = compileWindData(windTree, station, windDirection, windSpeed, coord);
+        sscanfr = sscanf(line,"%d;%f;%f;%[^\n]",&station, &windDirection, &windSpeed, coord);// @EDIT FOR ORDER
+        if(sscanfr==4) windTree = compileWindData(windTree, station, windDirection, windSpeed, coord);
+        if(sscanfr==0) ERR(1, "Can't read data in line %d.\n", info);
         printf("\r[WindModeABRAVL] Compiling data %d/?", info);
 
         if(avl){
