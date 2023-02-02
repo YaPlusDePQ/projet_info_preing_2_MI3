@@ -1,5 +1,5 @@
 reset
-#
+
 set title "vecteurs vent par longitude et Latitude"
 set xlabel "Longitude"
 set ylabel "Latitude"
@@ -14,5 +14,3 @@ set autoscale noextend
 
 plot "test.csv" using 5:4:($2*pi)/180:3 with  vectors arrowstyle 3 notitle
 pause -1 "Hit return to continue"
-reset
-#
