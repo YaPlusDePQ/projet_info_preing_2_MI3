@@ -164,9 +164,11 @@ int TempPressureMode1ABRAVL(const char* sourcePath, const char* outPath, int avl
         info++; 
         value = 0;
         station = 0;
+        int sscanfr = 0;
 
-        if(sscanf(line,"%d;%f",&station, &value) == 0) ERR(1, "Can't read data in line %d.\n", info); // @EDIT FOR ORDER
-        stationTree = compileStationData(stationTree, station, value);
+        sscanfr=sscanf(line,"%d;%f",&station, &value); // @EDIT FOR ORDER
+        if (sscanfr==2) stationTree = compileStationData(stationTree, station, value);
+        ERR(1, "Can't read data in line %d.\n", info);
         printf("\r[TempPressureMode1ABRAVL] Compiling data %d/?     ", info);
 
         if(avl){
