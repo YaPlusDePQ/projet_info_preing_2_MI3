@@ -421,6 +421,7 @@ FILE * ListIntoFile2(List * plist, FILE * end){         //puts the wanted rows i
         p = p->next;
     }
     fprintf(end,"%I64d;%f;%f\n",p->elem1,p->elem2,p->elem3);                                 //puts the three rows into the file - for option 3 
+    return end;
 }
 
 
