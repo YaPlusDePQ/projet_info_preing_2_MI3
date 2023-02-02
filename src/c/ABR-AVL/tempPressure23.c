@@ -186,20 +186,31 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
         info++;
         value = 0;
         station = 0;
+        int sscanfr=0;
         strcpy(date, "");
 
         switch(mode){
             case 2:
-                if(sscanf(line,"%[^;];%f", date, &value) == 0) ERR(1, "Can't read data in line %d.\n", info); // @EDIT FOR ORDER
+                sscanfr=sscanf(line,"%[^;];%f", date, &value) == 0); // @EDIT FOR ORDER
                 station = 0;
                 break;
             case 3:
-                if(sscanf(line,"%d;%[^;];%f",&station, date, &value) == 0) ERR(1, "Can't read data in line %d.\n", info); // @EDIT FOR ORDER
+                sscanfr=sscanf(line,"%d;%[^;];%f",&station, date, &value) == 0); // @EDIT FOR ORDER
                 break;
 
         }
-        
-        dateTree = compileDateData(mode, dateTree, date, dateToInt(date), station, value);
+        switch(sscanfr){
+            case 0:
+                ERR(1, "Can't read data in line %d.\n", info);
+                break;
+            case 2:
+                if(mode==2) dateTree = compileDateData(mode, dateTree, date, dateToInt(date), station, value);
+                break;
+            case 3:
+                if(mode==3) dateTree = compileDateData(mode, dateTree, date, dateToInt(date), station, value);
+                break;
+        }
+       
         printf("\r[TempPressureMode23ABRAVL] Compiling data %d/?     ", info);
 
         if(avl){
