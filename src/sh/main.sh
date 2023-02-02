@@ -166,9 +166,9 @@ then
     else 
         if [$arg_r -eq 1 ]
         then 
-            ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -h -r
+            ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -h -r
         else 
-            ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -h 
+            ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -h 
         fi 
         gnuplot "test.csv" -persist
     fi 
@@ -202,9 +202,9 @@ then
     else 
         if [$arg_r -eq 1 ]
         then 
-            ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -m -r
+            ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -m -r
         else 
-            ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -m 
+            ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -m 
         fi 
         gnuplot "test.csv" -persist
     fi 
@@ -237,9 +237,9 @@ then
     else 
         if [$arg_r -eq 1 ]
         then 
-            ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -w -r
+            ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -w -r
         else 
-            ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -w 
+            ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -w 
         fi 
         gnuplot "test.csv" -persist
     fi 
@@ -274,9 +274,9 @@ then
         else 
             if [$arg_r -eq 1 ]
             then 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t1 -r
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t1 -r
             else 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t1 
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t1 
             fi 
             gnuplot "test.csv" -persist
         fi 
@@ -308,9 +308,9 @@ then
         else 
             if [$arg_r -eq 1 ]
             then 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t2 -r
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t2 -r
             else 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t2 
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t2 
             fi 
             gnuplot "test.csv" -persist
         fi 
@@ -341,9 +341,9 @@ then
         else 
             if [$arg_r -eq 1 ]
             then 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t3 -r
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t3 -r
             else 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t3
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -t3
             fi 
             gnuplot "test.csv" -persist
         fi 
@@ -379,9 +379,9 @@ then
         else 
             if [$arg_r -eq 1 ]
             then 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p1 -r
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p1 -r
             else 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p1 
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p1 
             fi 
             gnuplot "test.csv" -persist
         fi 
@@ -413,9 +413,9 @@ then
         else 
             if [$arg_r -eq 1 ]
             then 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p2 -r
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p2 -r
             else 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p2 
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p2 
             fi 
             gnuplot "test.csv" -persist
         fi 
@@ -446,9 +446,9 @@ then
         else 
             if [$arg_r -eq 1 ]
             then 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p3 -r
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p3 -r
             else 
-                ./exec --abr -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p3 
+                ./exec --tab -f source/meteo_filtered_data_v1.csv -o PROJET_INFO_PREING2_MI3/sh/test.csv -p3 
             fi 
             gnuplot "test.csv" -persist
         fi 
