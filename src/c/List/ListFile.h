@@ -10,6 +10,7 @@ List * FileIntoList4(FILE * file, int op);              //gets the 4 rows into t
 
 List * FileIntoList5(FILE * file);                      //gets the 5 rows into the list, the 5 rows are into one link - for the wind
 
-FILE* ListIntoFile(List * plist, FILE * end, int option);           //puts the wanted rows into a .dat file - for every option
+FILE* ListIntoFile(List * plist, FILE * end, int option);           //puts the wanted rows into a .dat file - for every option except option 3
 
+FILE* ListIntoFile1(List * plist, FILE * end, int option);           //puts the wanted rows into a .dat file - for option 3
 #endif

@@ -380,7 +380,7 @@ List * FileIntoList5(FILE * file){                              //gets the 5 row
     return plist;
 }
 
-FILE* ListIntoFile(List * plist,FILE * end,int option){                    //puts the wanted rows into a .dat file - for every option
+FILE* ListIntoFile(List * plist,FILE * end,int option){                    //puts the wanted rows into a .dat file - for every option except option 3
     List * p = plist;
     while(p->next != NULL){                                           //loop on each link of the list to fill the returning file
         switch(option){
@@ -409,7 +409,7 @@ FILE* ListIntoFile(List * plist,FILE * end,int option){                    //put
     return end;                                     
 }
 
-FILE * ListIntoFile(List * plist, FILE * end){
+FILE * ListIntoFile2(List * plist, FILE * end){         //puts the wanted rows into a .dat file - for option 3
     List * p = plist;
     while(p->next != NULL){
         if(p->elem1 != p->next->elem1){
