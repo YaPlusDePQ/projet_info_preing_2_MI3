@@ -1,4 +1,4 @@
--f <file> : to specify the file 
+-f <file> or -f <file directory> : to specify the name of the original file or its directory  
 -h : height
 -m : moisuture 
 -w : wind 
