@@ -1,10 +1,18 @@
 #include "../mainDefine.h"
 
-/* -------------------------------------------- init and kill functions --------------------------------------------*/
+/* -------------------------------------------- StationNode strcuture dependency -------------------------------------------- */
 
+/**
+*  \brief Create new StationNode element.
+*
+*  \param station Station id.
+*  \param value Temperature or pression of the station.
+*
+*  \return Pointer to the new element.
+*/
 stationNode* newStationNode(int station, float value){
     stationNode* newNode = malloc(sizeof(stationNode));
-    if(newNode==NULL) exit(1);//ERR(4, "newStationNode memory allocation failed.\n");
+    if(newNode==NULL) exit(110);
     newNode->station = station;
     newNode->min = value;
     newNode->max = value;
@@ -12,25 +20,32 @@ stationNode* newStationNode(int station, float value){
     newNode->avgc = 1;
     newNode->lc = NULL;
     newNode->rc = NULL;
-    //DPRINTF("[newStationNode] [%d]: min:%f, max:%f, avg:%f, avgc:%d", newNode->station, newNode->min, newNode->max, newNode->avg, newNode->avgc);
     return newNode;
 }
 
+/**
+*  \brief Free StationNode tree dynamics allocations.
+*  
+*  \param head Head of the tree.
+*/
 void freeStationNodeTree(stationNode* head){
     if(head->lc != NULL) freeStationNodeTree(head->lc); //free all left child
     if(head->rc != NULL) freeStationNodeTree(head->rc); //free all right child
-    //DPRINTF("[freeStationNodeTree] freeing %p ", head);
     if(head != NULL){
         free(head);
-        //DPRINTF("[DONE]\n");
     }
     else{
-        //DPRINTF("[FAILED]\n");
-        exit(1);//exit(1); //ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
+        exit(111);
     }
 }
 
-
+/**
+*  \brief Give number of node of a StationNode tree.
+*  
+*  \param head Head of the tree.
+*
+*  \return Number of node(s).
+*/
 int SizeOfStationNodeTree(stationNode* head, int i){
     i++;
     if(head->lc != NULL) i = SizeOfStationNodeTree(head->lc, i); 
@@ -40,6 +55,13 @@ int SizeOfStationNodeTree(stationNode* head, int i){
 
 /*  -------------------------------------------- AVL function -------------------------------------------- */
 
+/**
+*  \brief Set height of each node of a stationNode tree.
+*  
+*  \param head Head of the tree.
+*
+*  \return Height of the tree.
+*/
 int setHeightStationNode(stationNode* head){
     if(head == NULL) return 0;
     else{
@@ -48,10 +70,17 @@ int setHeightStationNode(stationNode* head){
 
         head->hl = hlc;
         head->hr = hrc;
-        return ( hlc > hrc ? hlc : hrc)+1;
+        return ( hlc > hrc ? hlc : hrc)+1; //return max height of each sub tree+1
     }
 }
 
+/**
+*  \brief Right rotation balancing of a stationNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 stationNode* RightRotationStationNodeTree(stationNode* unstablehead){
     stationNode* newhead = unstablehead->rc;
     unstablehead->rc = newhead->lc;
@@ -59,6 +88,13 @@ stationNode* RightRotationStationNodeTree(stationNode* unstablehead){
     return newhead;
 }
 
+/**
+*  \brief Left rotation balancing of a stationNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 stationNode* LeftRotationStationNodeTree(stationNode* unstablehead){
     stationNode* newhead = unstablehead->lc;
     unstablehead->lc = newhead->rc;
@@ -66,22 +102,50 @@ stationNode* LeftRotationStationNodeTree(stationNode* unstablehead){
     return newhead;
 }
 
+/**
+*  \brief "Double right" rotation balancing of a stationNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 stationNode* DRightRotationStationNodeTree(stationNode* unstablehead){
     unstablehead->rc = LeftRotationStationNodeTree(unstablehead->rc);
     return RightRotationStationNodeTree(unstablehead); 
 }
 
+/**
+*  \brief "Double left" rotation balancing of a stationNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 stationNode* DLeftRotationStationNodeTree(stationNode* unstablehead){
     unstablehead->lc = RightRotationStationNodeTree(unstablehead->lc);
     return LeftRotationStationNodeTree(unstablehead);
 }
 
+/**
+*  \brief Test if a stationNode tree need balancing.
+*  
+*  \param head Head of the tree.
+*
+*  \return 0 if balanced, 1 otherwise.
+*/
 int isUnbalancedStationNodeTree(stationNode *head){
     if(head == NULL) return 0;
     if((head->hl - head->hr)  < -1 || (head->hl - head->hr) > 1) return 1;
     return isUnbalancedStationNodeTree(head->lc) || isUnbalancedStationNodeTree(head->rc);
 }
 
+/**
+*  \brief Balanced a stationNode tree 1 time.
+*  
+*  \param head Head of the tree.
+*
+*  \return New HMNode tree's head.
+*/
 stationNode* BalanceStationNodeTree(stationNode* head){
     if(head == NULL) return NULL;
 
@@ -106,11 +170,19 @@ stationNode* BalanceStationNodeTree(stationNode* head){
 
 /* -------------------------------------------- sorting functions --------------------------------------------*/
 
-stationNode* compileStationData(stationNode* head, int station, float value){
-    if(head == NULL) return newStationNode(station, value);
+/**
+*  \brief Add new stationNode only if the station isn't in the tree, if it is in, update the values.
+*  
+*  \param head Head of the tree.
+*  \param station Station id.
+*  \param value Temperatur of pression of the station.
+*
+*  \return New stationNode tree's head.
+*/
+stationNode* compileStationData_ABRAVL(stationNode* head, int station, float value){
+    if(head == NULL) return newStationNode(station, value); //if the tree doesnt exist (only 1 time)
     
-    if(head->station == station) {
-        //DPRINTF("[compileStationData] updating existing node ");
+    if(head->station == station) { //update already existing station
         head->min = value < head->min ? value : head->min; 
         head->max = value > head->max ? value : head->max; 
         head->avg += value;
@@ -119,40 +191,58 @@ stationNode* compileStationData(stationNode* head, int station, float value){
     }
 
     if(station <= head->station){
-        if(head->lc != NULL) compileStationData(head->lc, station, value);
+        if(head->lc != NULL) compileStationData_ABRAVL(head->lc, station, value);
         else head->lc = newStationNode(station, value);
     }
     else{
-        if(head->rc != NULL) compileStationData(head->rc, station, value);
+        if(head->rc != NULL) compileStationData_ABRAVL(head->rc, station, value);
         else head->rc = newStationNode(station, value);
     }
 
     return head;
 }
 
-void _writeInFileDescendingTP1(FILE* file, stationNode* current){
-    if(current->rc != NULL) _writeInFileDescendingTP1(file, current->rc);
-    if(fprintf(file, "%d;%f;%f;%f\n", current->station, current->min, current->max, current->avg/current->avgc) < 0) exit(1); //ERR(1, "Can't write data in file\n");  // @EDIT FOR ORDER
-    if(current->lc != NULL) _writeInFileDescendingTP1(file, current->lc);
+/**
+*  \brief Recursive call for writing in a descending order.
+*
+*  \param file Target file.
+*  \param current Current node during recursion.
+*
+*/
+void writeInFileDescendingTP1_ABRAVL(FILE* file, stationNode* current){
+    if(current->rc != NULL) writeInFileDescendingTP1_ABRAVL(file, current->rc);
+    if(fprintf(file, "%d;%f;%f;%f\n", current->station, current->min, current->max, current->avg/current->avgc) < 0) exit(310);// @EDIT FOR ORDER
+    if(current->lc != NULL) writeInFileDescendingTP1_ABRAVL(file, current->lc);
 }
+
 /**
 *  \brief Recursive call for writing in a Ascending order.
 *
 *  \param file Target file.
 *  \param current Current node during recursion.
 *
-// */
-void _writeInFileAscendingTP1(FILE* file, stationNode* current){
-    if(current->lc  != NULL) _writeInFileAscendingTP1(file, current->lc);
-    if(fprintf(file, "%d;%f;%f;%f\n", current->station, current->min, current->max, current->avg/current->avgc) < 0) exit(1); //ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
-    if(current->rc != NULL) _writeInFileAscendingTP1(file, current->rc);
+*/
+void writeInFileAscendingTP1_ABRAVL(FILE* file, stationNode* current){
+    if(current->lc  != NULL) writeInFileAscendingTP1_ABRAVL(file, current->lc);
+    if(fprintf(file, "%d;%f;%f;%f\n", current->station, current->min, current->max, current->avg/current->avgc) < 0) exit(311);// @EDIT FOR ORDER
+    if(current->rc != NULL) writeInFileAscendingTP1_ABRAVL(file, current->rc);
 }
 
-int TempPressureMode1ABRAVL(const char* sourcePath, const char* outPath, int avl, int descending){
+/**
+*  \brief Sort a file for -t1 or -p1 mode using ABR or AVL.
+*  
+*  \param sourcePath Path of the source file.
+*  \param outPath Path of the output file.
+*  \param avl 0 for ABR sorting, 1 for AVL sorting.
+*  \param descending 0 for Ascending order of value, 1 for descending order of value.
+*
+*  \return 0.
+*/
+int TempPressureMode1_ABRAVL(const char* sourcePath, const char* outPath, int avl, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) exit(1); //ERR(120, "Failed to open file '%s'", sourcePath);
+    if(source == NULL) exit(112); 
 
-    int info = 0;
+    int info = 0;//debug info
     stationNode *stationTree = NULL;
     float value = 0;
     int station = 0;
@@ -164,11 +254,11 @@ int TempPressureMode1ABRAVL(const char* sourcePath, const char* outPath, int avl
         info++; 
         value = 0;
         station = 0;
-        int sscanfr = 0;
+        int sscanfr = 0; //make sur that the datas are correctly collected
         
         sscanfr=sscanf(line,"%d;%f",&station, &value); // @EDIT FOR ORDER
-        if (sscanfr==2) stationTree = compileStationData(stationTree, station, value);
-        if (sscanfr==0) exit(1); //ERR(1, "Can't read data in line %d.\n", info);
+        if (sscanfr==2) stationTree = compileStationData_ABRAVL(stationTree, station, value); //add the new datas
+        if (sscanfr==0) exit(210); 
         printf("\r[TempPressureMode1ABRAVL] Compiling data %d/?     ", info);
 
         if(avl){
@@ -185,7 +275,7 @@ int TempPressureMode1ABRAVL(const char* sourcePath, const char* outPath, int avl
 
     printf("[TempPressureMode1ABRAVL] creating output file\n");
     FILE* out = fopen(outPath, "w");
-    if(out == NULL) exit(1); //ERR(120, "Failed to create file '%s'", outPath);
+    if(out == NULL) exit(113);
 
     printf("[TempPressureMode1ABRAVL] seting up first line\n");
     char st[20] = "";
@@ -195,10 +285,10 @@ int TempPressureMode1ABRAVL(const char* sourcePath, const char* outPath, int avl
     fprintf(out, "%s;%s min; %s max; %s moyenne\n",st, v, v, v); // @EDIT FOR ORDER
 
     printf("[TempPressureMode1ABRAVL] writting data\n");
-    if(descending) _writeInFileDescendingTP1(out, stationTree);
-    else _writeInFileAscendingTP1(out, stationTree);
+    if(descending) writeInFileDescendingTP1_ABRAVL(out, stationTree);
+    else writeInFileAscendingTP1_ABRAVL(out, stationTree);
     
-    printf("[TempPressureMode1ABRAVL] cleaning up\n");
+    printf("[TempPressureMode1ABRAVL] cleaning up\n"); //free ressources
     freeStationNodeTree(stationTree);
     fclose(source);
     fclose(out);

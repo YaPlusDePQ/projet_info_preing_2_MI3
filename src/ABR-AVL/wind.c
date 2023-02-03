@@ -1,17 +1,19 @@
 #include "../mainDefine.h"
 
-/* -------------------------------------------- init and kill functions --------------------------------------------*/
+/* -------------------------------------------- windNode strcuture dependency -------------------------------------------- */
 /**
-*  \brief create new HMNode element.
+*  \brief Create new windNode element.
 *
-*  \param station station id.
-*  \param value height or moisture of station.
+*  \param station Station id.
+*  \param direction direction of wind of the station.
+*  \param speed speed of wind of the station.
+*  \param coord Coordinate of the station.
 *
-*  \return pointer to the new node.
+*  \return Pointer to the new element.
 */
 windNode* newWindNode(int station, float direction, float speed, const char* coord){
     windNode* newNode = malloc(sizeof(windNode));
-    if(newNode==NULL) exit(1);//ERR(4, "newWindNode memory allocation failed.\n");
+    if(newNode==NULL) exit(130);
     newNode->lc = NULL;
     newNode->rc = NULL;
     newNode->station = station;
@@ -21,29 +23,32 @@ windNode* newWindNode(int station, float direction, float speed, const char* coo
     newNode->hl = 0;
     newNode->hr = 0;
     strcpy(newNode->coord, coord);
-    //DPRINTF("[newHMNode] [%d]: %f %f %s\n",newNode->station, newNode->tDirection, newNode->tSpeed, newNode->coord);
     return newNode;
 }
 
 /**
-*  \brief free HMNode tree.
+*  \brief free windNode tree.
 *  
 *  \param head head of the tree.
 */
 void freeWindNodeTree(windNode* head){
     if(head->lc != NULL) freeWindNodeTree(head->lc); //free all left child
     if(head->rc != NULL) freeWindNodeTree(head->rc); //free all right child
-    //DPRINTF("[freeWindNodeTree] freeing %p ", head);
     if(head != NULL){
         free(head);
-        //DPRINTF("[DONE]\n");
     }
     else{
-        //DPRINTF("[FAILED]\n");
-        exit(1);//ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
+        exit(131);
     }
 }
 
+/**
+*  \brief Give number of node of a windNode tree.
+*  
+*  \param head Head of the tree.
+*
+*  \return Number of node(s).
+*/
 int SizeOfWindNodeTree(windNode* head, int i){
     i++;
     if(head->lc != NULL) i = SizeOfWindNodeTree(head->lc, i); 
@@ -53,6 +58,13 @@ int SizeOfWindNodeTree(windNode* head, int i){
 
 /*  -------------------------------------------- AVL function -------------------------------------------- */
 
+/**
+*  \brief Set height of each node of a windNode tree.
+*  
+*  \param head Head of the tree.
+*
+*  \return Height of the tree.
+*/
 int setHeightWindNode(windNode* head){
     if(head == NULL) return 0;
     else{
@@ -65,6 +77,13 @@ int setHeightWindNode(windNode* head){
     }
 }
 
+/**
+*  \brief Right rotation balancing of a windNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 windNode* RightRotationWindNodeTree(windNode* unstablehead){
     windNode* newhead = unstablehead->rc;
     unstablehead->rc = newhead->lc;
@@ -72,6 +91,13 @@ windNode* RightRotationWindNodeTree(windNode* unstablehead){
     return newhead;
 }
 
+/**
+*  \brief Left rotation balancing of a windNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 windNode* LeftRotationWindNodeTree(windNode* unstablehead){
     windNode* newhead = unstablehead->lc;
     unstablehead->lc = newhead->rc;
@@ -79,22 +105,50 @@ windNode* LeftRotationWindNodeTree(windNode* unstablehead){
     return newhead;
 }
 
+/**
+*  \brief "Double right" rotation balancing of a windNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 windNode* DRightRotationWindNodeTree(windNode* unstablehead){
     unstablehead->rc = LeftRotationWindNodeTree(unstablehead->rc);
     return RightRotationWindNodeTree(unstablehead); 
 }
 
+/**
+*  \brief "Double left" rotation balancing of a windNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 windNode* DLeftRotationWindNodeTree(windNode* unstablehead){
     unstablehead->lc = RightRotationWindNodeTree(unstablehead->lc);
     return LeftRotationWindNodeTree(unstablehead);
 }
 
+/**
+*  \brief Test if a windNode tree need balancing.
+*  
+*  \param head Head of the tree.
+*
+*  \return 0 if balanced, 1 otherwise.
+*/
 int isUnbalancedWindNodeTree(windNode *head){
     if(head == NULL) return 0;
     if((head->hl - head->hr)  < -1 || (head->hl - head->hr) > 1) return 1;
     return isUnbalancedWindNodeTree(head->lc) || isUnbalancedWindNodeTree(head->rc);
 }
 
+/**
+*  \brief Balanced a windNode tree 1 time.
+*  
+*  \param head Head of the tree.
+*
+*  \return New windNode tree's head.
+*/
 windNode* BalanceWindNodeTree(windNode* head){
     if(head == NULL) return NULL;
 
@@ -119,11 +173,20 @@ windNode* BalanceWindNodeTree(windNode* head){
 
 /* -------------------------------------------- sorting functions --------------------------------------------*/
 
-windNode* compileWindData(windNode* head, int station, float direction, float speed, const char* coord){
+/**
+*  \brief Add new windNode only if the station isn't in the tree, if it is in, update the values.
+*  
+*  \param station Station id.
+*  \param direction direction of wind of the station.
+*  \param speed speed of wind of the station.
+*  \param coord Coordinate of the station.
+*
+*  \return New windNode tree's head.
+*/
+windNode* compileWindData_ABRAVL(windNode* head, int station, float direction, float speed, const char* coord){
     if(head == NULL) return newWindNode(station, direction, speed, coord);
     
     if(head->station == station) {
-        //DPRINTF("[compileWindData] updating existing node ");
         head->tDirection += direction;
         head->tSpeed += speed; 
         head->avgc++;
@@ -132,32 +195,56 @@ windNode* compileWindData(windNode* head, int station, float direction, float sp
     }
 
     if(station <= head->station){
-        if(head->lc != NULL) compileWindData(head->lc, station, direction, speed, coord);
+        if(head->lc != NULL) compileWindData_ABRAVL(head->lc, station, direction, speed, coord);
         else head->lc = newWindNode(station, direction, speed, coord);
     }
     else{
-        if(head->rc != NULL) compileWindData(head->rc, station, direction, speed, coord);
+        if(head->rc != NULL) compileWindData_ABRAVL(head->rc, station, direction, speed, coord);
         else head->rc = newWindNode(station, direction, speed, coord);
     }
 
     return head;
 }
 
-void _writeInFileDescendingW(FILE* file, windNode* current){
-    if(current->rc != NULL) _writeInFileDescendingW(file, current->rc);
-    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
-    if(current->lc != NULL) _writeInFileDescendingW(file, current->lc);
+/**
+*  \brief Recursive call for writing in a descending order.
+*
+*  \param file Target file.
+*  \param current Current node during recursion.
+*
+*/
+void writeInFileDescendingW_ABRAVL(FILE* file, windNode* current){
+    if(current->rc != NULL) writeInFileDescendingW_ABRAVL(file, current->rc);
+    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) exit(330);// @EDIT FOR ORDER
+    if(current->lc != NULL) writeInFileDescendingW_ABRAVL(file, current->lc);
 }
 
-void _writeInFileAscendingW(FILE* file, windNode* current){
-    if(current->lc != NULL) _writeInFileAscendingW(file, current->lc);
-    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
-    if(current->rc != NULL) _writeInFileAscendingW(file, current->rc);
+/**
+*  \brief Recursive call for writing in a Ascending order.
+*
+*  \param file Target file.
+*  \param current Current node during recursion.
+*
+*/
+void writeInFileAscendingW_ABRAVL(FILE* file, windNode* current){
+    if(current->lc != NULL) writeInFileAscendingW_ABRAVL(file, current->lc);
+    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) exit(331);// @EDIT FOR ORDER
+    if(current->rc != NULL) writeInFileAscendingW_ABRAVL(file, current->rc);
 }
 
-int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int descending){
+/**
+*  \brief Sort a file for -w mode using ABR or AVL.
+*  
+*  \param sourcePath Path of the source file.
+*  \param outPath Path of the output file.
+*  \param avl 0 for ABR sorting, 1 for AVL sorting.
+*  \param descending 0 for Ascending order of value, 1 for descending order of value.
+*
+*  \return 0.
+*/
+int WindMode_ABRAVL(const char* sourcePath, const char* outPath, int avl, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) exit(1);//ERR(120, "Failed to create file '%s'", sourcePath);
+    if(source == NULL) exit(132);
 
     int info = 0;
     windNode *windTree = NULL;
@@ -177,9 +264,9 @@ int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int des
         strcpy(coord, "");
         
         sscanfr = sscanf(line,"%d;%f;%f;%[^\n]",&station, &windDirection, &windSpeed, coord);// @EDIT FOR ORDER
-        if(sscanfr==4) windTree = compileWindData(windTree, station, windDirection, windSpeed, coord);
-        if(sscanfr==0) exit(1);//ERR(1, "Can't read data in line %d.\n", info);
-        printf("\r[WindModeABRAVL] Compiling data %d/?", info);
+        if(sscanfr==4) windTree = compileWindData_ABRAVL(windTree, station, windDirection, windSpeed, coord);
+        if(sscanfr==0) exit(230);
+        printf("\r[WindMode_ABRAVL] Compiling data %d/?", info);
 
         if(avl){
             printf("Balancing tree...");
@@ -191,22 +278,22 @@ int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int des
             }
         }
     }
-    printf("\r[WindModeABRAVL] Compiling data DONE. %d datas in %d nodes                \n", info, SizeOfWindNodeTree(windTree, 0));
+    printf("\r[WindMode_ABRAVL] Compiling data DONE. %d datas in %d nodes                \n", info, SizeOfWindNodeTree(windTree, 0));
 
-    printf("[WindModeABRAVL] creating output file\n");
+    printf("[WindMode_ABRAVL] creating output file\n");
     FILE* out = fopen(outPath, "w");
-    if(out == NULL) exit(1);//ERR(120, "Failed to create file '%s'", outPath);
+    if(out == NULL) exit(123);
 
     fputs("ID OMM station;direction moyenne; vitesse moyenne;X;Y\n", out);
 
-    printf("[WindModeABRAVL] writting data\n");
-    if(descending) _writeInFileDescendingW(out, windTree);
-    else _writeInFileAscendingW(out, windTree);
+    printf("[WindMode_ABRAVL] writting data\n");
+    if(descending) writeInFileDescendingW_ABRAVL(out, windTree);
+    else writeInFileAscendingW_ABRAVL(out, windTree);
     
-    printf("[WindModeABRAVL] cleaning up\n");
+    printf("[WindMode_ABRAVL] cleaning up\n");
     freeWindNodeTree(windTree);
     fclose(source);
     fclose(out);
-    printf("[WindModeABRAVL] DONE\n");
+    printf("[WindMode_ABRAVL] DONE\n");
     return 0;
 }

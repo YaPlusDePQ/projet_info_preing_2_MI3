@@ -5,7 +5,7 @@
 #define MOISTUREMODE 1
 
 typedef struct HMNode HMNode;
-/* structure for -h -m mode for ABR and AVL data sorting*/
+/* structure for -h -m modes for ABR and AVL data sorting*/
 struct HMNode{
     int station; //id of the station
     int value; //height of the station/Moisture of the station
@@ -16,5 +16,5 @@ struct HMNode{
     int hr; //height of right child
 };
 
-int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mode, int avl, int descending);
+int HeightMoistureMode_ABRAVL(const char* sourcePath, const char* outPath, int mode, int avl, int descending);
 #endif

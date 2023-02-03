@@ -6,20 +6,19 @@
 *  \brief Create new HMNode element.
 *
 *  \param station Station id.
-*  \param value Height or moisture of station.
+*  \param value Height or moisture of the station.
 *  \param coord Coordinate of the station.
 *
-*  \return Pointer to the new node.
+*  \return Pointer to the new element.
 */
 HMNode* newHMNode(int station, int value, const char* coord){
     HMNode* newNode = malloc(sizeof(HMNode));
-    if(newNode==NULL) exit(1);//ERR(100, "newHMNode memory allocation failed.\n");
+    if(newNode==NULL) exit(100);
     newNode->lc = NULL;
     newNode->rc = NULL;
     newNode->station = station;
     newNode->value = value;
     strcpy(newNode->coord, coord);
-    //DPRINTF("[newHMNode] [%d]: %d %s\n",newNode->station, newNode->value, newNode->coord);
     return newNode;
 }
 
@@ -31,14 +30,10 @@ HMNode* newHMNode(int station, int value, const char* coord){
 void freeHMNodeTree(HMNode* head){
     if(head->lc != NULL) freeHMNodeTree(head->lc); //free all left child
     if(head->rc != NULL) freeHMNodeTree(head->rc); //free all right child
-    //DPRINTF("[freeHMNodeTree] freeing %p ", head);
     if(head != NULL){
         free(head);
-        //DPRINTF("[DONE]\n");
     }
     else{
-        //DPRINTF("[FAILED]\n");
-        //ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
         exit(101);
     }
 }
@@ -182,22 +177,21 @@ HMNode* BalanceHMNodeTree(HMNode* head){
 *
 *  \return New HMNode tree's head.
 */
-HMNode* compileHMData(HMNode* head, int station, int value, const char* coord){
+HMNode* compileHMData_ABRAVL(HMNode* head, int station, int value, const char* coord){
     if(head == NULL) return newHMNode(station, value, coord); //if the tree doesnt exist (only 1 time)
     
     if(head->station == station){ //update already existing station
-        //DPRINTF("[compileHMData] updating existing node ");
         head->value = value > head->value ? value : head->value; 
         if( !strcmp(head->coord, "")) strcpy(head->coord, coord);
         return head;
     }
 
     if(station <= head->station){ 
-        if(head->lc != NULL) compileHMData(head->lc, station, value, coord); //go in deep in not at a leaf
+        if(head->lc != NULL) compileHMData_ABRAVL(head->lc, station, value, coord); //go in deep in not at a leaf
         else head->lc = newHMNode(station, value, coord);
     }
     else{
-        if(head->rc != NULL) compileHMData(head->rc, station, value, coord); //go in deep in not at a leaf
+        if(head->rc != NULL) compileHMData_ABRAVL(head->rc, station, value, coord); //go in deep in not at a leaf
         else head->rc = newHMNode(station, value, coord);
     }
 
@@ -212,16 +206,16 @@ HMNode* compileHMData(HMNode* head, int station, int value, const char* coord){
 *
 *  \return New HMNode tree's head.
 */
-HMNode* _sortHMData(HMNode* head, HMNode* toSort){
+HMNode* _sortHMData_ABRAVL(HMNode* head, HMNode* toSort){
 
     if(head == NULL) { return newHMNode(toSort->station, toSort->value, toSort->coord);} //if the tree doesnt exist (only 1 time)
 
     if(toSort->value <= head->value){
-        if(head->lc != NULL) _sortHMData(head->lc, toSort); //go in deep in not at a leaf
+        if(head->lc != NULL) _sortHMData_ABRAVL(head->lc, toSort); //go in deep in not at a leaf
         else head->lc = newHMNode(toSort->station, toSort->value, toSort->coord);;
     }
     else{
-        if(head->rc != NULL) _sortHMData(head->rc, toSort); //go in deep in not at a leaf
+        if(head->rc != NULL) _sortHMData_ABRAVL(head->rc, toSort); //go in deep in not at a leaf
         else head->rc = newHMNode(toSort->station, toSort->value, toSort->coord);;
     }
     
@@ -237,7 +231,7 @@ HMNode* _sortHMData(HMNode* head, HMNode* toSort){
 *  \return New HMNode tree's head.
 */
 HMNode* sortHMNodeTree(HMNode* head, HMNode* sortedHead){
-    sortedHead = _sortHMData(sortedHead, head);
+    sortedHead = _sortHMData_ABRAVL(sortedHead, head);
     if(head->lc != NULL) sortHMNodeTree(head->lc, sortedHead);
     if(head->rc != NULL) sortHMNodeTree(head->rc, sortedHead);
     return sortedHead;
@@ -250,10 +244,10 @@ HMNode* sortHMNodeTree(HMNode* head, HMNode* sortedHead){
 *  \param current Current node during recursion.
 *
 */
-void writeInFileDescendingHM(FILE* file, HMNode* current){
-    if(current->rc != NULL) writeInFileDescendingHM(file, current->rc);
-    if(fprintf(file, "%d;%d;%s\n", current->station, current->value, current->coord) < 0) exit(300);//ERR(300, "Can't write data in file\n"); // @EDIT FOR ORDER
-    if(current->lc != NULL) writeInFileDescendingHM(file, current->lc);
+void writeInFileDescendingHM_ABRAVL(FILE* file, HMNode* current){
+    if(current->rc != NULL) writeInFileDescendingHM_ABRAVL(file, current->rc);
+    if(fprintf(file, "%d;%d;%s\n", current->station, current->value, current->coord) < 0) exit(300); // @EDIT FOR ORDER
+    if(current->lc != NULL) writeInFileDescendingHM_ABRAVL(file, current->lc);
 }
 
 /**
@@ -263,10 +257,10 @@ void writeInFileDescendingHM(FILE* file, HMNode* current){
 *  \param current Current node during recursion.
 *
 */
-void writeInFileAscendingHM(FILE* file, HMNode* current){
-    if(current->lc != NULL) writeInFileAscendingHM(file, current->lc);
-    if(fprintf(file, "%d;%d;%s\n", current->station, current->value, current->coord) < 0) exit(300);//ERR(301, "Can't write data in file\n"); // @EDIT FOR ORDER
-    if(current->rc != NULL) writeInFileAscendingHM(file, current->rc);
+void writeInFileAscendingHM_ABRAVL(FILE* file, HMNode* current){
+    if(current->lc != NULL) writeInFileAscendingHM_ABRAVL(file, current->lc);
+    if(fprintf(file, "%d;%d;%s\n", current->station, current->value, current->coord) < 0) exit(300); // @EDIT FOR ORDER
+    if(current->rc != NULL) writeInFileAscendingHM_ABRAVL(file, current->rc);
 }
 
 
@@ -281,9 +275,9 @@ void writeInFileAscendingHM(FILE* file, HMNode* current){
 *
 *  \return 0.
 */
-int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mode, int avl, int descending){
+int HeightMoistureMode_ABRAVL(const char* sourcePath, const char* outPath, int mode, int avl, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) exit(102);//ERR(102, "Failed to create file '%s'", sourcePath);
+    if(source == NULL) exit(102);
 
     int info = 0; //debug info
     HMNode *HMTree = NULL;
@@ -300,7 +294,7 @@ int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mo
         info++; //update debug
         value = 0;
         station = 0;
-        int sscanfr = 0;
+        int sscanfr = 0; //make sur that the datas are correctly collected
         strcpy(coord, "");
         
         switch(mode){
@@ -313,9 +307,9 @@ int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mo
         }
         
         sprintf(coord, "%f;%f", x,y); //write x and y into coord
-        if(sscanfr == 4) HMTree = compileHMData(HMTree, station, value, coord); //add the new datas
-        if(sscanfr == 0) exit(200);//ERR(200, "Can't read data in line %d.\n", info);
-        printf("\r[HeightMoistureModeABRAVL] Compiling data %d/?     ", info);
+        if(sscanfr == 4) HMTree = compileHMData_ABRAVL(HMTree, station, value, coord); //add the new datas
+        if(sscanfr == 0) exit(200);
+        printf("\r[HeightMoistureMode_ABRAVL] Compiling data %d/?     ", info);
 
         if(avl){ //balance the tree if AVL mode
             printf("Balancing tree...");
@@ -327,19 +321,19 @@ int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mo
         }
 
     }
-    printf("\r[HeightMoistureModeABRAVL] Compiling data DONE. %d datas in %d nodes\n", info, SizeOfHMNodeTree(HMTree, 0));
+    printf("\r[HeightMoistureMode_ABRAVL] Compiling data DONE. %d datas in %d nodes\n", info, SizeOfHMNodeTree(HMTree, 0));
 
-    printf("[HeightMoistureModeABRAVL] Sorting tree\n");
+    printf("[HeightMoistureMode_ABRAVL] Sorting tree\n");
     HMNode* sortedHMTree = sortHMNodeTree(HMTree, NULL); //sort the tree by value
 
-    printf("[HeightMoistureModeABRAVL] Cleaning up old tree\n");
+    printf("[HeightMoistureMode_ABRAVL] Cleaning up old tree\n");
     freeHMNodeTree(HMTree);
     
-    printf("[HeightMoistureModeABRAVL] Creating output file\n");
+    printf("[HeightMoistureMode_ABRAVL] Creating output file\n");
     FILE* out = fopen(outPath, "w");
-    if(out == NULL) exit(103);//ERR(103, "Failed to create file '%s'", outPath);
+    if(out == NULL) exit(103);
     
-    printf("[HeightMoistureModeABRAVL] Writting column\n"); //organise column name
+    printf("[HeightMoistureMode_ABRAVL] Writting column\n"); //organise column name
     char c0[20] = "";
     char c1[20]= "";
     char c2[20]="";
@@ -355,14 +349,14 @@ int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mo
             break;  
     }
     
-    printf("[HeightMoistureModeABRAVL] Writting data\n"); //write data in output file
-    if(descending) writeInFileDescendingHM(out, sortedHMTree);
-    else writeInFileAscendingHM(out, sortedHMTree);
+    printf("[HeightMoistureMode_ABRAVL] Writting data\n"); //write data in output file
+    if(descending) writeInFileDescendingHM_ABRAVL(out, sortedHMTree);
+    else writeInFileAscendingHM_ABRAVL(out, sortedHMTree);
     
-    printf("[HeightMoistureModeABRAVL] Cleaning up\n"); //free ressources
+    printf("[HeightMoistureMode_ABRAVL] Cleaning up\n"); //free ressources
     freeHMNodeTree(sortedHMTree);
     fclose(source);
     fclose(out);
-    printf("[HeightMoistureModeABRAVL] DONE\n");
+    printf("[HeightMoistureMode_ABRAVL] DONE\n");
     return 0;
 }

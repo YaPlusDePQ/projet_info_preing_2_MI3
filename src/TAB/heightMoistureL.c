@@ -1,47 +1,78 @@
 #include "../mainDefine.h"
 
-HMList* newHMlist(int station, int value, const char* coord){
-    HMList* newNode = malloc(sizeof(HMList));
-    if(newNode==NULL) exit(1);//ERR(100, "newHMNode memory allocation failed.\n");
-    newNode->next = NULL;
-    newNode->before = NULL;
-    newNode->station = station;
-    newNode->value = value;
-    strcpy(newNode->coord, coord);
-    return newNode;
+/* -------------------------------------------- HMelmt strcuture dependency -------------------------------------------- */
+
+/**
+*  \brief Create new HMelmt element.
+*
+*  \param station Station id.
+*  \param value Height or moisture of the station.
+*  \param coord Coordinate of the station.
+*
+*  \return Pointer to the new element.
+*/
+HMelmt* newHMelmt(int station, int value, const char* coord){
+    HMelmt* newElmt = malloc(sizeof(HMelmt));
+    if(newElmt==NULL) exit(140);
+    newElmt->next = NULL;
+    newElmt->before = NULL;
+    newElmt->station = station;
+    newElmt->value = value;
+    strcpy(newElmt->coord, coord);
+    return newElmt;
 }
 
-
-void freeHMListt(HMList* head){
+/**
+*  \brief Free HMelmt tree dynamics allocations.
+*  
+*  \param head Head of the linked list.
+*/
+void freeHMelmtLinkedList(HMelmt* head){
     if(head->next != NULL){
-        freeHMListt(head->next);
+        freeHMelmtLinkedList(head->next);
     }
     free(head);
 }
 
 /**
-*  \brief Add new HMNode only if the station isn't in the tree, if it is in, take the higher value.
+*  \brief Give number of node of a HMelmt linked list.
 *  
-*  \param head Head of the tree.
+*  \param head Head of the linked list.
+*
+*  \return Number of element.
+*/
+int getSizeOfHMelmt(HMelmt* head){
+    int i=0;
+    while(head!=NULL){
+        i++;
+        head = head->next;
+    }
+    return i;
+}
+
+/**
+*  \brief Add new HMelmt only if the station isn't in the linked list, if it is in, take the higher value.
+*  
+*  \param head Head of the linked list.
 *  \param station Station id.
 *  \param value Height or moisture of station.
 *  \param coord Coordinate of the station.
 *
-*  \return New HMNode tree's head.
+*  \return New HMelmt linked list's head.
 */
-HMList* compileHMDataList(HMList* head, int station, int value, const char* coord){
+HMelmt* compileHMData_TAB(HMelmt* head, int station, int value, const char* coord){
    
-    if(head == NULL) return newHMlist(station, value, coord); //if the tree doesnt exist (only 1 time)
+    if(head == NULL) return newHMelmt(station, value, coord);
     
-    if(head->station < station){
-        HMList* newHead = newHMlist(station, value, coord);
+    if(head->station < station){ //change head
+        HMelmt* newHead = newHMelmt(station, value, coord);
         newHead->next = head;
         head->before = newHead;
         return newHead;
     }
 
-    HMList* bh = head;
-    HMList* newElement = NULL;
+    HMelmt* bh = head;
+    HMelmt* newElement = NULL;
     while(bh != NULL){
         if(bh->station == station){ //update already existing station
             bh->value = value > bh->value ? value : bh->value; 
@@ -50,12 +81,13 @@ HMList* compileHMDataList(HMList* head, int station, int value, const char* coor
         }
 
         if(bh->next == NULL){
-            newElement = newHMlist(station, value, coord);
+            newElement = newHMelmt(station, value, coord); //add to the end
             bh->next = newElement;
             newElement->before = bh->next;
+            return head;
         }
-        else if(station > bh->next->station){
-            newElement = newHMlist(station, value, coord);
+        else if(station > bh->next->station){ //swap value
+            newElement = newHMelmt(station, value, coord);
             newElement->next = bh->next;
             bh->next->before = newElement;
             newElement->before = bh;
@@ -69,66 +101,103 @@ HMList* compileHMDataList(HMList* head, int station, int value, const char* coor
     return head;
 }
 
-
-HMList* sortHMList(HMList* head, HMList* sortedHead){
-    HMList* bh = head;
-    sortedHead = newHMlist(head->station, head->value, head->coord);
-    HMList* bsh = sortedHead;
-    HMList* blmt = NULL;
+/**
+*  \brief copy and sort a HMelmt linked list by his height/moisture.
+*  
+*  \param head Head of the linked list to sort and copy.
+*  \param sortedHead New HMNode linked list's head. (should always be NULL)
+*
+*  \return New HMNode linked list's head.
+*/
+HMelmt* sortHMelmt_TAB(HMelmt* head, HMelmt* sortedHead){
+    sortedHead = newHMelmt(head->station, head->value, head->coord);
+    HMelmt* bh = head;
+    HMelmt* bsh = sortedHead;
+    HMelmt* blmt = NULL;
+    int info=1;
+    int max=getSizeOfHMelmt(head);
 
     while(bh != NULL){
         blmt = NULL;
         bsh = sortedHead;
+        printf("\r[sortHMelmt] %d/%d nodes sorted", info, max);
 
         while(bsh != NULL){
             if(bsh->next == NULL){
-                blmt = newHMlist(bh->station, bh->value, bh->coord);
+                blmt = newHMelmt(bh->station, bh->value, bh->coord);
                 bsh->next = blmt;
                 blmt->before = bsh->next; 
                 break;
             }
             else if(bh->value > bsh->next->value){
-                blmt = newHMlist(bh->station, bh->value, bh->coord);
+                blmt = newHMelmt(bh->station, bh->value, bh->coord);
                 blmt->next = bsh->next;
                 bsh->next->before = blmt;
                 blmt->before = bsh;
                 bsh->next = blmt;
                 break;
             }
+            bsh = bsh->next;
         }
 
         bh = bh->next;
-        
+        info++;
     }
-
-    return sortedHead;
+    printf("\r[sortHMelmt] %d/%d nodes sorted\n", info, max);
+    sortedHead->next->before = NULL;
+    return sortedHead->next;
 }
 
-void writeInFileDescendingHMList(FILE* file, HMList* head){
-    HMList* bh = head;
-    while(head->next != NULL){
+/**
+*  \brief Recursive call for writing in a descending order.
+*
+*  \param file Target file.
+*  \param current Current node during recursion.
+*
+*/
+void writeInFileDescendingHM_TAB(FILE* file, HMelmt* head){
+    HMelmt* bh = head;
+    while(bh->next != NULL){ //go to the end
         bh = bh->next;
+        
     }
     while(bh != NULL){
-        if(fprintf(file, "%d;%d;%s\n", bh->station, bh->value, bh->coord) < 0) exit(300);
+        if(fprintf(file, "%d;%d;%s\n", bh->station, bh->value, bh->coord) < 0) exit(340);
         bh = bh->before;
     }   
 }
 
-void writeInFileAscendingHMList(FILE* file, HMList* head){
-    HMList* bh = head;
+/**
+*  \brief Recursive call for writing in a Ascending order.
+*
+*  \param file Target file.
+*  \param current Current node during recursion.
+*
+*/
+void writeInFileAscendingHM_TAB(FILE* file, HMelmt* head){
+    HMelmt* bh = head;
     while(bh != NULL){
-        if(fprintf(file, "%d;%d;%s\n", bh->station, bh->value, bh->coord) < 0) exit(300);
+        if(fprintf(file, "%d;%d;%s\n", bh->station, bh->value, bh->coord) < 0) exit(341);
         bh = bh->next;
     }   
 }
 
-int HeightMoistureModeTAB(const char* sourcePath, const char* outPath, int mode, int avl, int descending){
+/**
+*  \brief Sort a file for -m or -h mode using ABR or AVL.
+*  
+*  \param sourcePath Path of the source file.
+*  \param outPath Path of the output file.
+*  \param mode HEIGHTMODE for -h, MOISTUREMODE for -m.
+*  \param descending 0 for Ascending order of value, 1 for descending order of value.
+*
+*  \return 0.
+*/
+int HeightMoistureMode_TAB(const char* sourcePath, const char* outPath, int mode, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) exit(102);//ERR(102, "Failed to create file '%s'", sourcePath);
+    if(source == NULL) exit(142);//ERR(102, "Failed to create file '%s'", sourcePath);
 
     int info = 0; //debug info
-    HMList *HMList = NULL;
+    HMelmt *HMelmtHead = NULL;
     int value = 0;
     int station = 0;
     char coord[30] = "";
@@ -155,48 +224,47 @@ int HeightMoistureModeTAB(const char* sourcePath, const char* outPath, int mode,
         }
         
         sprintf(coord, "%f;%f", x,y); //write x and y into coord
-        if(sscanfr == 4) HMList = compileHMDataList(HMList, station, value, coord); //add the new datas
-        if(sscanfr == 0) exit(200);//ERR(200, "Can't read data in line %d.\n", info);
-        printf("\r[HeightMoistureModeTAB] Compiling data %d/?     ", info);
+        if(sscanfr == 4) HMelmtHead = compileHMData_TAB(HMelmtHead, station, value, coord); //add the new datas
+        if(sscanfr == 0) exit(240);
+        printf("\r[HeightMoistureMode_TAB] Compiling data %d/?     ", info);
 
     }
-    printf("\r[HeightMoistureModeABRAVL] Compiling data DONE. %d datas\n", info);
+    printf("\r[HeightMoistureMode_TAB] Compiling data DONE. %d datas in %d nodes\n", info, getSizeOfHMelmt(HMelmtHead));
 
-//     printf("[HeightMoistureModeABRAVL] Sorting List\n");
-//     HMList* scalbnf = sortHMList(HMList, NULL); //sort the tree by value
+    printf("[HeightMoistureMode_TAB] Sorting List\n");
+    HMelmt* HMelmtHeadSorted = sortHMelmt_TAB(HMelmtHead, NULL); //sort the tree by value
 
-//     printf("[HeightMoistureModeABRAVL] Cleaning up old tree\n");
-//     freeHMListt(HMList);
+    printf("[HeightMoistureMode_TAB] Cleaning up old tree\n");
+    freeHMelmtLinkedList(HMelmtHead);
     
-//     printf("[HeightMoistureModeABRAVL] Creating output file\n");
-//     FILE* out = fopen(outPath, "w");
-//     if(out == NULL) exit(103);//ERR(103, "Failed to create file '%s'", outPath);
+    printf("[HeightMoistureMode_TAB] Creating output file\n");
+    FILE* out = fopen(outPath, "w");
+    if(out == NULL) exit(103);//ERR(103, "Failed to create file '%s'", outPath);
     
-//     printf("[HeightMoistureModeABRAVL] Writting column\n"); //organise column name
-//     char c0[20] = "";
-//     char c1[20]= "";
-//     char c2[20]="";
-//     char c3[20]="";
-//     rewind(source);
-//     fscanf(source, "%[^;\n];%[^;\n];%[^;\n];%[^;\n]", c0, c1, c2, c3);
-//     switch(mode){ //make sure that column are in the same order as the data
-//         case HEIGHTMODE:
-//             fprintf(out, "%s;%s max;%s;%s\n", c0,c3,c1,c2);
-//             break;
-//         case MOISTUREMODE:
-//             fprintf(out, "%s;%s max;%s;%s\n", c0,c1,c2,c3);
-//             break;  
-//     }
+    printf("[HeightMoistureMode_TAB] Writting column\n"); //organise column name
+    char c0[20] = "";
+    char c1[20]= "";
+    char c2[20]="";
+    char c3[20]="";
+    rewind(source);
+    fscanf(source, "%[^;\n];%[^;\n];%[^;\n];%[^;\n]", c0, c1, c2, c3);
+    switch(mode){ //make sure that column are in the same order as the data
+        case HEIGHTMODE:
+            fprintf(out, "%s;%s max;%s;%s\n", c0,c3,c1,c2);
+            break;
+        case MOISTUREMODE:
+            fprintf(out, "%s;%s max;%s;%s\n", c0,c1,c2,c3);
+            break;  
+    }
     
-//     printf("[HeightMoistureModeABRAVL] Writting data\n"); //write data in output file
-//     if(descending) writeInFileDescendingHMList(out, sortedHMList);
-//     else writeInFileAscendingHMList(out, sortedHMList);
+    printf("[HeightMoistureMode_TAB] Writting data\n"); //write data in output file
+    if(descending) writeInFileDescendingHM_TAB(out, HMelmtHeadSorted);
+    else writeInFileAscendingHM_TAB(out, HMelmtHeadSorted);
     
-//     printf("[HeightMoistureModeABRAVL] Cleaning up\n"); //free ressources
-//     freeHMListt(sortedHMList);
-//     fclose(source);
-//     fclose(out);
-//     printf("[HeightMoistureModeABRAVL] DONE\n");
-//     return 0;
+    printf("[HeightMoistureMode_TAB] Cleaning up\n"); //free ressources
+    freeHMelmtLinkedList(HMelmtHeadSorted);
+    fclose(source);
+    fclose(out);
+    printf("[HeightMoistureMode_TAB] DONE\n");
     return 0;
 }

@@ -18,21 +18,23 @@
 
 #define MAX(a,b) (a > b ? a : b)
 
-//#define DPRINTF(fmt, ...) if(DEBUG){printf(fmt __VA_OPT__(,) ##__VA_ARGS__);}
-//#define ERR(code, format, ...) do{printf("*********ERROR (%d): ", code);printf(format __VA_OPT__(,) ##__VA_ARGS__);exit(code);}while(0)
-
 /* 
 Error code:
 1xx: allocation
     10x /ABR-AVL/heightMoisture.c
-    11x /ABR-AVL/tempPressure.c
-    12x /ABR-AVL/abr.c
+    11x /ABR-AVL/tempPressure1.c
+    12x /ABR-AVL/tempPressure23.c
+    13x /ABR-AVL/wind.h
 2xx: failed to read
     20x /ABR-AVL/heightMoisture.c
-    21x /ABR-AVL/dataFmtg.c
-    22x /ABR-AVL/abr.c
+    21x /ABR-AVL/tempPressure1.c
+    22x /ABR-AVL/tempPressure23.c
+    23x /ABR-AVL/wind.h
 3xx: failed to write
     30x /ABR-AVL/heightMoisture.c
+    31x /ABR-AVL/tempPressure1.c
+    32x /ABR-AVL/tempPressure23.c
+    33x /ABR-AVL/wind.h
 */
 
 /* headers */
@@ -41,8 +43,9 @@ Error code:
 #include "./ABR-AVL/tempPressure.h"
 #include "./ABR-AVL/wind.h"
 
+#include "./TAB/windL.h"
 #include "./TAB/heightMoistureL.h"
-
+#include "./TAB/tempPressureL.h"
 
 // #include "./List/ListBaseFunction.h"
 // #include "./List/ListCalculus.h"

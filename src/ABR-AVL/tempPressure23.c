@@ -1,34 +1,52 @@
 #include "../mainDefine.h"
 
-/* -------------------------------------------- init and kill functions --------------------------------------------*/
+/* -------------------------------------------- StationNode strcuture dependency -------------------------------------------- */
 
+/**
+*  \brief Create new dateNode element.
+*
+*  \param date Date in the file.
+*  \param dateint date in hours.
+*  \param station Station id.
+*  \param value Temperature or pression of the station.
+*
+*  \return Pointer to the new element.
+*/
 dateNode* newDateNode(const char* date, long long int dateint, int station, float value){
     dateNode* newNode  =  malloc(sizeof(dateNode));
-    if(newNode==NULL) exit(1);//ERR(4, "newDateNode memory allocation failed.\n");
+    if(newNode==NULL) exit(120);
     strcpy(newNode->datestr, date);
     newNode->dateint = dateint;
     newNode->stationTree = newStationNode(station, value);
     newNode->lc = NULL;
     newNode->rc = NULL;
-    //DPRINTF("[newStationNode] datestr:%s dateint:%I64d stationTree:%p", newNode->datestr, newNode->dateint, newNode->stationTree);
     return newNode;
 }
 
+/**
+*  \brief Free dateNode tree dynamics allocations.
+*  
+*  \param head Head of the tree.
+*/
 void freeDateNodeTree(dateNode* head){
     if(head->lc != NULL) freeDateNodeTree(head->lc); //free all left child
     if(head->rc != NULL) freeDateNodeTree(head->rc); //free all right child
-    //DPRINTF("[freeDateNodeTree] freeing %p ", head);
     if(head != NULL){
-        freeStationNodeTree(head->stationTree);
+        freeStationNodeTree(head->stationTree); //free stationNode inner tree
         free(head);
-        //DPRINTF("[DONE]\n");
     }
     else{
-        //DPRINTF("[FAILED]\n");
-        exit(1);//ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
+        exit(121);
     }
 }
 
+/**
+*  \brief Give number of node of a dateNode tree.
+*  
+*  \param head Head of the tree.
+*
+*  \return Number of node(s).
+*/
 int SizeOfDateNodeTree(dateNode* head, int i){
     i++;
     if(head->lc != NULL) i = SizeOfDateNodeTree(head->lc, i); 
@@ -38,6 +56,13 @@ int SizeOfDateNodeTree(dateNode* head, int i){
 
 /*  -------------------------------------------- AVL function -------------------------------------------- */
 
+/**
+*  \brief Set height of each node of a dateNode tree.
+*  
+*  \param head Head of the tree.
+*
+*  \return Height of the tree.
+*/
 int setHeightDateNode(dateNode* head){
     if(head == NULL) return 0;
     else{
@@ -50,6 +75,13 @@ int setHeightDateNode(dateNode* head){
     }
 }
 
+/**
+*  \brief Right rotation balancing of a dateNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 dateNode* RightRotationDateNodeTree(dateNode* unstablehead){
     dateNode* newhead = unstablehead->rc;
     unstablehead->rc = newhead->lc;
@@ -57,6 +89,13 @@ dateNode* RightRotationDateNodeTree(dateNode* unstablehead){
     return newhead;
 }
 
+/**
+*  \brief Left rotation balancing of a dateNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 dateNode* LeftRotationDateNodeTree(dateNode* unstablehead){
     dateNode* newhead = unstablehead->lc;
     unstablehead->lc = newhead->rc;
@@ -64,22 +103,50 @@ dateNode* LeftRotationDateNodeTree(dateNode* unstablehead){
     return newhead;
 }
 
+/**
+*  \brief "Double right" rotation balancing of a dateNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 dateNode* DRightRotationDateNodeTree(dateNode* unstablehead){
     unstablehead->rc = LeftRotationDateNodeTree(unstablehead->rc);
     return RightRotationDateNodeTree(unstablehead); 
 }
 
+/**
+*  \brief "Double left" rotation balancing of a dateNode tree.
+*  
+*  \param unstableNode Node that need balancing.
+*
+*  \return Balanced Node.
+*/
 dateNode* DLeftRotationDateNodeTree(dateNode* unstablehead){
     unstablehead->lc = RightRotationDateNodeTree(unstablehead->lc);
     return LeftRotationDateNodeTree(unstablehead);
 }
 
+/**
+*  \brief Test if a dateNode tree need balancing.
+*  
+*  \param head Head of the tree.
+*
+*  \return 0 if balanced, 1 otherwise.
+*/
 int isUnbalancedDateNodeTree(dateNode *head){
     if(head == NULL) return 0;
     if((head->hl - head->hr)  < -1 || (head->hl - head->hr) > 1) return 1;
     return isUnbalancedDateNodeTree(head->lc) || isUnbalancedDateNodeTree(head->rc);
 }
 
+/**
+*  \brief Balanced a dateNode tree 1 time.
+*  
+*  \param head Head of the tree.
+*
+*  \return New HMNode tree's head.
+*/
 dateNode* BalanceDateNodeTree(dateNode* head){
     if(head == NULL) return NULL;
 
@@ -105,73 +172,116 @@ dateNode* BalanceDateNodeTree(dateNode* head){
 
 /* -------------------------------------------- sorting functions --------------------------------------------*/
 
-dateNode* compileDateData(int mode, dateNode* head, const char* date, long long int dateint, int station, float value){
+/**
+*  \brief Add new dateNode only if the date isn't in the tree, if it is in, update the value if mode 2
+* and add the station to the corresponding dateNode stationNode tree if mode 3.
+*  
+*  \param date Date in the file.
+*  \param dateint date in hours.
+*  \param station Station id.
+*  \param value Temperature or pression of the station.
+*
+*  \return New dateNode tree's head.
+*/
+dateNode* compileDateData_ABRAVL(int mode, dateNode* head, const char* date, long long int dateint, int station, float value){
     if(head == NULL) return newDateNode(date, dateint, station, value);
     
     if(head->dateint == dateint){
-        //DPRINTF("[compileDateData] updating existing node ");
         switch(mode){
             case 2:
                 head->stationTree->avg += value;
                 head->stationTree->avgc++;
                 break;
             case 3:
-                head->stationTree = compileStationData(head->stationTree, station, value);
+                head->stationTree = compileStationData_ABRAVL(head->stationTree, station, value); //add the station to the tree
                 break;
         }
         return head;
     }
 
     if(dateint <= head->dateint){
-        if(head->lc != NULL) compileDateData(mode, head->lc, date, dateint, station, value);
+        if(head->lc != NULL) compileDateData_ABRAVL(mode, head->lc, date, dateint, station, value);
         else head->lc = newDateNode(date, dateint, station, value);
     }
     else{
-        if(head->rc != NULL) compileDateData(mode, head->rc, date, dateint, station, value);
+        if(head->rc != NULL) compileDateData_ABRAVL(mode, head->rc, date, dateint, station, value);
         else head->rc = newDateNode(date, dateint, station, value);
     }
 
     return head;
 }
 
-void _writeInFileStationTreeTP23(FILE* file, const char* date, stationNode* current){
-    if(current->lc != NULL) _writeInFileStationTreeTP23(file, date, current->lc);
-    if(fprintf(file, "%s;%d;%f\n", date, current->station, current->avg/current->avgc)< 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
-    if(current->rc != NULL) _writeInFileStationTreeTP23(file, date, current->rc);
+/**
+*  \brief Recursive call for writing in a Ascending order stationNode tree values in t3/p3 format.
+*
+*  \param file Target file.
+*  \param current Current node during recursion.
+*
+*/
+void writeInFileStationTreeTP23_ABRAVL(FILE* file, const char* date, stationNode* current){
+    if(current->lc != NULL) writeInFileStationTreeTP23_ABRAVL(file, date, current->lc);
+    if(fprintf(file, "%s;%d;%f\n", date, current->station, current->avg/current->avgc)< 0) exit(320);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(current->rc != NULL) writeInFileStationTreeTP23_ABRAVL(file, date, current->rc);
 
 }
 
-void _writeInFileDescendingTP23(FILE* file, int mode, dateNode* current){
-    if(current->rc != NULL) _writeInFileDescendingTP23(file, mode, current->rc);
+/**
+*  \brief Recursive call for writing in a descending order.
+*
+*  \param file Target file.
+*  \param current Current node during recursion.
+*
+*/
+void writeInFileDescendingTP23_ABRAVL(FILE* file, int mode, dateNode* current){
+    if(current->rc != NULL) writeInFileDescendingTP23_ABRAVL(file, mode, current->rc);
     switch(mode){
         case 2:
-            if(fprintf(file, "%s;%f\n", current->datestr, current->stationTree->avg/current->stationTree->avgc)< 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+            if(fprintf(file, "%s;%f\n", current->datestr, current->stationTree->avg/current->stationTree->avgc)< 0) exit(321); // @EDIT FOR ORDER
             break;
         case 3:
-            _writeInFileStationTreeTP23(file, current->datestr, current->stationTree);
+            writeInFileStationTreeTP23_ABRAVL(file, current->datestr, current->stationTree);
             fputs("\n\n", file);
             break;
     }
-    if(current->lc != NULL) _writeInFileDescendingTP23(file, mode, current->lc);
+    if(current->lc != NULL) writeInFileDescendingTP23_ABRAVL(file, mode, current->lc);
 }
 
-void _writeInFileAscendingTP23(FILE* file, int mode, dateNode* current){
-    if(current->lc != NULL) _writeInFileAscendingTP23(file, mode, current->lc);
+/**
+*  \brief Recursive call for writing in a Ascending order.
+*
+*  \param file Target file.
+*  \param current Current node during recursion.
+*
+*/
+void writeInFileAscendingTP23_ABRAVL(FILE* file, int mode, dateNode* current){
+    if(current->lc != NULL) writeInFileAscendingTP23_ABRAVL(file, mode, current->lc);
     switch(mode){
         case 2:
-            if(fprintf(file, "%s;%f\n", current->datestr, current->stationTree->avg/current->stationTree->avgc)< 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+            if(fprintf(file, "%s;%f\n", current->datestr, current->stationTree->avg/current->stationTree->avgc)< 0) exit(322); // @EDIT FOR ORDER
             break;
         case 3:
-            _writeInFileStationTreeTP23(file, current->datestr, current->stationTree);
+            writeInFileStationTreeTP23_ABRAVL(file, current->datestr, current->stationTree);
             fputs("\n\n", file);
             break;
     }
-    if(current->rc != NULL) _writeInFileAscendingTP23(file, mode, current->rc);
+    if(current->rc != NULL) writeInFileAscendingTP23_ABRAVL(file, mode, current->rc);
 }
 
-int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int avl, int mode, int descending){
+
+/**
+*  \brief Sort a file for t2-3 and p2-3 mode using ABR or AVL.
+*  
+*  \param sourcePath Path of the source file.
+*  \param outPath Path of the output file.
+*  \param avl 0 for ABR sorting, 1 for AVL sorting.
+*  \param mode 2 for -t2/p2 sorting, 3 for -t3/p3 sorting.
+*  \param descending 0 for Ascending order of value, 1 for descending order of value.
+*
+*  \return 0.
+*/
+int TempPressureMode23_ABRAVL(const char* sourcePath, const char* outPath, int avl, int mode, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) exit(1);//ERR(120, "Failed to open file '%s'", sourcePath);
+    if(source == NULL) exit(122);
 
     int info = 0;
     dateNode *dateTree = NULL;
@@ -186,7 +296,7 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
         info++;
         value = 0;
         station = 0;
-        int sscanfr=0;
+        int sscanfr=0; //make sur that the datas are correctly collected
         strcpy(date, "");
 
         switch(mode){
@@ -201,17 +311,17 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
         }
         switch(sscanfr){
             case 0:
-                exit(1);//ERR(1, "Can't read data in line %d.\n", info);
+                exit(220);
                 break;
             case 2:
-                if(mode==2) dateTree = compileDateData(mode, dateTree, date, dateToInt(date), station, value);
+                if(mode==2) dateTree = compileDateData_ABRAVL(mode, dateTree, date, dateToInt(date), station, value);
                 break;
             case 3:
-                if(mode==3) dateTree = compileDateData(mode, dateTree, date, dateToInt(date), station, value);
+                if(mode==3) dateTree = compileDateData_ABRAVL(mode, dateTree, date, dateToInt(date), station, value);
                 break;
         }
        
-        printf("\r[TempPressureMode23ABRAVL] Compiling data %d/?     ", info);
+        printf("\r[TempPressureMode23_ABRAVL] Compiling data %d/?     ", info);
 
         if(avl){
             printf("Balancing tree...");
@@ -223,13 +333,13 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
             }
         }
     }
-    printf("\r[TempPressureMode23ABRAVL] Compiling data DONE. %d datas in %d nodes\n", info, SizeOfDateNodeTree(dateTree, 0));
+    printf("\r[TempPressureMode23_ABRAVL] Compiling data DONE. %d datas in %d nodes\n", info, SizeOfDateNodeTree(dateTree, 0));
 
-    printf("[TempPressureMode23ABRAVL] creating output file\n");
+    printf("[TempPressureMode23_ABRAVL] creating output file\n");
     FILE* out = fopen(outPath, "w");
-    if(out == NULL) exit(1);//ERR(120, "Failed to create file '%s'", outPath);
+    if(out == NULL) exit(123);
 
-    printf("[TempPressureMode23ABRAVL] seting up first line\n");
+    printf("[TempPressureMode23_ABRAVL] seting up first line\n");
     char st[20] = "";
     char d[20] = "";
     char v[20]= "";
@@ -246,21 +356,31 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
             break;
     }
     
-    printf("[TempPressureMode23ABRAVL] writting data\n");
-    if(descending) _writeInFileDescendingTP23(out, mode, dateTree);
-    else _writeInFileAscendingTP23(out, mode, dateTree);
+    printf("[TempPressureMode23_ABRAVL] writting data\n");
+    if(descending) writeInFileDescendingTP23_ABRAVL(out, mode, dateTree);
+    else writeInFileAscendingTP23_ABRAVL(out, mode, dateTree);
     
-    printf("[TempPressureMode23ABRAVL] cleaning up\n");
+    printf("[TempPressureMode23_ABRAVL] cleaning up\n");
     freeDateNodeTree(dateTree);
     fclose(source);
     fclose(out);
-    printf("[TempPressureMode23ABRAVL] DONE\n");
+    printf("[TempPressureMode23_ABRAVL] DONE\n");
     return 0;
 }
 
-int TempPressureModeABRAVL(const char* sourcePath, const char* outPath, int avl, int mode, int descending){
-    printf("i:%s, o:%s\n", sourcePath, outPath);
-    if(mode==1) TempPressureMode1ABRAVL(sourcePath, outPath, avl, descending);
-    else TempPressureMode23ABRAVL(sourcePath, outPath, avl, mode, descending);
+/**
+*  \brief Sort a file for -t and -p mode using ABR or AVL.
+*  
+*  \param sourcePath Path of the source file.
+*  \param outPath Path of the output file.
+*  \param avl 0 for ABR sorting, 1 for AVL sorting.
+*  \param mode 1,2 or 3.
+*  \param descending 0 for Ascending order of value, 1 for descending order of value.
+*
+*  \return 0.
+*/
+int TempPressureMode_ABRAVL(const char* sourcePath, const char* outPath, int avl, int mode, int descending){
+    if(mode==1) TempPressureMode1_ABRAVL(sourcePath, outPath, avl, descending);
+    else TempPressureMode23_ABRAVL(sourcePath, outPath, avl, mode, descending);
     return 0;
 }

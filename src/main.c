@@ -17,47 +17,47 @@ int main(int argc, char **argv){
     printf("[main] starting sorting...\n");
     switch(mode[1]){
         case 'm':
-            if(!strcmp(type, "--abr")) HeightMoistureModeABRAVL(sourcePath, "../output/moisturesorted.csv", MOISTUREMODE, 0, !isReversed);
+            if(!strcmp(type, "--abr")) HeightMoistureMode_ABRAVL(sourcePath, "../output/moisturesorted.csv", MOISTUREMODE, 0, !isReversed);
             else{ 
-                if(!strcmp(type, "--avl")) HeightMoistureModeABRAVL(sourcePath, "../output/moisturesorted.csv", MOISTUREMODE, 1, !isReversed);
-                //else Moisture(sourcePath, "../output/moisturesorted.csv",isReversed);
+                if(!strcmp(type, "--avl")) HeightMoistureMode_ABRAVL(sourcePath, "../output/moisturesorted.csv", MOISTUREMODE, 1, !isReversed);
+                else HeightMoistureMode_TAB(sourcePath, "../output/moisturesorted.csv",MOISTUREMODE, isReversed);
             }
             break;
         case 'h':
-            if(!strcmp(type, "--abr"))HeightMoistureModeABRAVL(sourcePath, "../output/heightsorted.csv", HEIGHTMODE,0, !isReversed);
+            if(!strcmp(type, "--abr"))HeightMoistureMode_ABRAVL(sourcePath, "../output/heightsorted.csv", HEIGHTMODE,0, !isReversed);
             else {
-                if(!strcmp(type, "--avl"))HeightMoistureModeABRAVL(sourcePath, "../output/heightsorted.csv", HEIGHTMODE, 1, !isReversed);
-                //else Height(sourcePath, "../output/heightsorted.csv", isReversed);
+                if(!strcmp(type, "--avl"))HeightMoistureMode_ABRAVL(sourcePath, "../output/heightsorted.csv", HEIGHTMODE, 1, !isReversed);
+                else HeightMoistureMode_TAB(sourcePath, "../output/heightsorted.csv",HEIGHTMODE, isReversed);
             }
             break;
         case 'w':
-            if(!strcmp(type, "--abr"))WindModeABRAVL(sourcePath, "../output/windsorted.csv", 0, isReversed);
+            if(!strcmp(type, "--abr"))WindMode_ABRAVL(sourcePath, "../output/windsorted.csv", 0, isReversed);
             else {
-                if(!strcmp(type, "--avl"))WindModeABRAVL(sourcePath, "../output/windsorted.csv", 1, isReversed);
-                //else Wind(sourcePath, outPath, isReversed);
+                if(!strcmp(type, "--avl"))WindMode_ABRAVL(sourcePath, "../output/windsorted.csv", 1, isReversed);
+                else WindModeTAB(sourcePath, outPath, isReversed);
             }
             break;
         case 't':
             switch(mode[2]){
                 case '1':
-                    if(!strcmp(type, "--abr"))TempPressureModeABRAVL(sourcePath, "../output/temperature1sorted.csv", 0, 1, isReversed);
+                    if(!strcmp(type, "--abr"))TempPressureMode_ABRAVL(sourcePath, "../output/temperature1sorted.csv", 0, 1, isReversed);
                     else {
-                        if(!strcmp(type, "--avl"))TempPressureModeABRAVL(sourcePath, "../output/temperature1sorted.csv", 1, 1, isReversed);
-                        //else Option1(sourcePath, "../output/temperature1sorted.csv", isReversed);
+                        if(!strcmp(type, "--avl"))TempPressureMode_ABRAVL(sourcePath, "../output/temperature1sorted.csv", 1, 1, isReversed);
+                        else TempPressureMode_TAB(sourcePath, "../output/temperature1sorted.csv", 1, isReversed);
                     }
                     break;
                 case '2':
-                    if(!strcmp(type, "--abr"))TempPressureModeABRAVL(sourcePath, "../output/temperature2sorted.csv", 0, 2, isReversed);
+                    if(!strcmp(type, "--abr"))TempPressureMode_ABRAVL(sourcePath, "../output/temperature2sorted.csv", 0, 2, isReversed);
                     else {
-                        if(!strcmp(type, "--avl"))TempPressureModeABRAVL(sourcePath, "../output/temperature2sorted.csv", 1, 2, isReversed);
-                        //else Option2(sourcePath, "../output/temperature2sorted.csv", isReversed);
+                        if(!strcmp(type, "--avl"))TempPressureMode_ABRAVL(sourcePath, "../output/temperature2sorted.csv", 1, 2, isReversed);
+                        else TempPressureMode_TAB(sourcePath, "../output/temperature2sorted.csv", 2, isReversed);
                     }
                     break;
                 case '3':
-                    if(!strcmp(type, "--abr"))TempPressureModeABRAVL(sourcePath, "../output/temperature3sorted.csv", 0, 3, isReversed);
+                    if(!strcmp(type, "--abr"))TempPressureMode_ABRAVL(sourcePath, "../output/temperature3sorted.csv", 0, 3, isReversed);
                     else {
-                        if(!strcmp(type, "--avl"))TempPressureModeABRAVL(sourcePath, "../output/temperature3sorted.csv", 1, 3, isReversed);
-                        //else Option3(sourcePath, "../output/temperature3sorted.csv", isReversed);
+                        if(!strcmp(type, "--avl"))TempPressureMode_ABRAVL(sourcePath, "../output/temperature3sorted.csv", 1, 3, isReversed);
+                        else TempPressureMode_TAB(sourcePath, "../output/temperature3sorted.csv", 3, isReversed);
                     }
                     break;
             }
@@ -65,24 +65,24 @@ int main(int argc, char **argv){
         case 'p':
             switch(mode[2]){
                 case '1':
-                    if(!strcmp(type, "--abr"))TempPressureModeABRAVL(sourcePath, "../output/pression1sorted.csv", 0, 1, isReversed);
+                    if(!strcmp(type, "--abr"))TempPressureMode_ABRAVL(sourcePath, "../output/pression1sorted.csv", 0, 1, isReversed);
                     else {
-                        if(!strcmp(type, "--avl"))TempPressureModeABRAVL(sourcePath, "../output/pression1sorted.csv", 1, 1, isReversed);
-                        //else Option1(sourcePath, "../output/pression1sorted.csv", isReversed);
+                        if(!strcmp(type, "--avl"))TempPressureMode_ABRAVL(sourcePath, "../output/pression1sorted.csv", 1, 1, isReversed);
+                        else TempPressureMode_TAB(sourcePath, "../output/pression1sorted.csv", 1, isReversed);
                     }
                     break;
                 case '2':
-                    if(!strcmp(type, "--abr"))TempPressureModeABRAVL(sourcePath, "../output/pression2sorted.csv", 0, 2, isReversed);
+                    if(!strcmp(type, "--abr"))TempPressureMode_ABRAVL(sourcePath, "../output/pression2sorted.csv", 0, 2, isReversed);
                     else {
-                        if(!strcmp(type, "--avl"))TempPressureModeABRAVL(sourcePath, "../output/pression2sorted.csv", 1, 2, isReversed);
-                        //else Option2(sourcePath, "../output/pression2sorted.csv", isReversed);
+                        if(!strcmp(type, "--avl"))TempPressureMode_ABRAVL(sourcePath, "../output/pression2sorted.csv", 1, 2, isReversed);
+                        else TempPressureMode_TAB(sourcePath, "../output/pression2sorted.csv", 2, isReversed);
                     }
                     break;
                 case '3':
-                    if(!strcmp(type, "--abr"))TempPressureModeABRAVL(sourcePath, "../output/pression3sorted.csv", 0, 3, isReversed);
+                    if(!strcmp(type, "--abr"))TempPressureMode_ABRAVL(sourcePath, "../output/pression3sorted.csv", 0, 3, isReversed);
                     else {
-                        if(!strcmp(type, "--avl"))TempPressureModeABRAVL(sourcePath, "../output/pression3sorted.csv", 1, 3, isReversed);
-                        //else Option3(sourcePath, "../output/pression3sorted.csv", isReversed);
+                        if(!strcmp(type, "--avl"))TempPressureMode_ABRAVL(sourcePath, "../output/pression3sorted.csv", 1, 3, isReversed);
+                        else TempPressureMode_TAB(sourcePath, "../output/pression3sorted.csv", 3, isReversed);
                     }
                     break;
             }
