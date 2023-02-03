@@ -49,4 +49,13 @@ After filtering the data the script will verify if the user chose a reverse mode
 
 Then the script will execute the command gnuplot to display the graphs
 
-The script will remove at the end the temporary files created during the execution of the main.sh (tmp0 and tmp1 where the , is replaced by ; and the files of the location) 
+The script will remove at the end the temporary files created during the execution of the main.sh (tmp0 and tmp1 where the , is replaced by ; and the files of the location)
+
+# C
+The user have to choose a sorting mode (abr, avl or tab) and the c will operate according to that 
+the .c program will take as an input the file entered after the -f and will return an output file (which will be an input file for gnuplot)
+
+## AVL/ABR : 
+Its a sorting according to binary trees
+The 
+## TAB :
