@@ -1,0 +1,22 @@
+-f : to specify the file 
+-h : height
+-m : moisuture 
+-w : wind 
+-p : pression (you have to add space after the p )
+    -p 1: 
+    -p 2:
+    -p 3: 
+-t : temperature (you have to add space after the t )
+    -t 1:
+    -t 2:
+    -t 3:
+-d <min> <max>: date 
+-F: France + corse
+-A: antilles
+-G: guyane francaise
+-O: ocean indien
+-S : saint pierre et miquelon 
+-Q : Antartique 
+--avl : sort data using avl
+--abr : sort data using abr
+--tab : sort data using tab 
