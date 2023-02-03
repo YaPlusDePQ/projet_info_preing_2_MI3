@@ -1,4 +1,4 @@
-#include "../mainDefine.h"
+#include "mainDefine.h"
 
 /**
 *  \brief convert month in day.
