@@ -145,14 +145,14 @@ then
     echo "ID OMM station;Latitude;Longitude;Altitude" > ../output/height.csv
     tail -n$((nt-1)) ../temp/tmp.csv >> ../output/height.csv
     rm ../temp/tmp.csv
-    if [$arg_r -eq 1 ]
+    if (($arg_r == 1 ))
     then 
         ./exec --$sortn -f ../output/height.csv -o ../output/heightsorted.csv -h -r
     else 
-        ./exec --$arg_r -f ../output/height.csv -o ../output/heightsorted.csv -h 
+        ./exec --$sortn-f ../output/height.csv -o ../output/heightsorted.csv -h 
     fi 
 
-    gnuplot "../output/heightsorted.csv" --persist
+    gnuplot "height.gnu" --persist
 fi   
 
 if (($arg_m == 1))#-----------------------moisture---------------------
@@ -162,13 +162,14 @@ then
     echo "ID OMM station;Humidité;Latitude;Longitude" > ../output/moisture.csv
     tail -n$((nt-1)) ../temp/tmp.csv >> ../output/moisture.csv
     rm ../temp/tmp.csv
-    if [$arg_r -eq 1 ]
+    if (($arg_r == 1 ))
     then 
         ./exec --$sortn -f ../output/moisture.csv -o ../output/moisturesorted.csv -m -r
     else 
         ./exec --$sortn -f ../output/moisture.csv -o ../output/moisturesorted.csv -m 
     fi 
-    gnuplot "../output/moisturesorted.csv" --persist
+    echo "test"
+    gnuplot "moisture.gnu" --persist --slow
 fi  
 if (($arg_w == 1))#------------------------WIND----------------------
 then 
@@ -177,13 +178,13 @@ then
     echo "ID OMM station;Direction du vent moyen 10 mn;Vitesse du vent moyen 10 mn;Latitude;Longitude" > ../output/wind.csv
     tail -n$((nt-1)) ../temp/tmp.csv >> ../output/wind.csv
     rm ../temp/tmp.csv
-    if [$arg_r -eq 1 ]
+    if (($arg_r == 1)) 
     then 
         ./exec --$sortn -f ../output/wind.csv -o ../output/windsorted.csv -w -r
     else 
         ./exec --$sortn -f ../output/wind.csv -o ../output/windsorted.csv -w
     fi 
-    gnuplot "../output/windsorted.csv" --persist 
+    gnuplot "wind.gnu" --persist 
 fi  
 if (($arg_t == 1)) #--------------------Temperature--------------------
 then 
@@ -194,13 +195,13 @@ then
         echo "ID OMM station;Température (°C)" > ../output/temperature1.csv
         tail -n$((nt-1)) ../temp/tmp.csv >> ../output/temperature1.csv 
         rm ../temp/tmp.csv
-        if [$arg_r -eq 1 ]
+        if (($arg_r == 1 ))
         then 
-            ./exec --$sortn -f  ../output/temperature1.csv -o ../output/temperature1sorted.csv -t1 -r
+            ./exec --$sortn -f ../output/temperature1.csv -o ../output/temperature1sorted.csv -t1 -r
         else 
-            ./exec --$sortn -f  ../output/temperature1.csv -o ../output/temperature1sorted.csv -t1
+            ./exec --$sortn -f ../output/temperature1.csv -o ../output/temperature1sorted.csv -t1
         fi 
-        gnuplot "../output/temperature1sorted.csv" --persist
+        gnuplot "t1.gnu" --persist
     elif (($mode == 2)) #-------------------------------MODE 2-----------------------------------------------
     then
         cut -d ';' -f2,12 --output-delimiter ';' $b  > ../temp/tmp.csv 
@@ -208,26 +209,26 @@ then
         echo "Date;Température (°C)" > ../output/temperature2.csv
         tail -n$((nt-1)) ../temp/tmp.csv >> ../output/temperature2.csv 
         rm ../temp/tmp.csv
-        if [$arg_r -eq 1 ]
+        if (( $arg_r == 1 ))
         then 
             ./exec --$sortn -f ../output/temperature2.csv -o ../output/temperature2sorted.csv -t2 -r
         else 
             ./exec --$sortn -f ../output/temperature2.csv -o ../output/temperature2sorted.csv -t2
         fi 
-        gnuplot "../output/temperature2sorted.csv" --persist
+        gnuplot "t2.gnu" --persist
     else #-------------------------------------------MODE 3 -----------------------------------------------------
         cut -d ';' -f1,2,12 --output-delimiter ';' $b > ../temp/tmp.csv 
         nt=`cat $b | wc -l`
         echo "ID OMM station;Date;Température (°C)" > ../output/temperature3.csv
         tail -n$((nt-1)) ../temp/tmp.csv >> ../output/temperature3.csv 
         rm ../temp/tmp.csv
-        if [$arg_r -eq 1 ]
+        if (($arg_r == 1 ))
         then 
             ./exec --$sortn -f ../output/temperature3.csv -o ../output/temperature3sorted.csv -t3 -r
         else 
             ./exec --$sortn -f ../output/temperature3.csv -o ../output/temperature3sorted.csv -t3
         fi 
-        gnuplot "../output/temperature3sorted.csv" --persist
+        #gnuplot "../output/temperature3sorted.csv" --persist
     fi
 fi  
 if (($arg_p == 1))#----------------------------------Pression----------------------------------
@@ -239,13 +240,13 @@ then
         echo "ID OMM station;Pression au niveau mer;Pression station;Variation de pression en 24 heures" > ../output/pression1.csv
         tail -n$((nt-1)) ../temp/tmp.csv >> ../output/pression1.csv 
         rm ../temp/tmp.csv
-        if [$arg_r -eq 1 ]
+        if (($arg_r == 1 ))
         then 
             ./exec --$sortn -f ../output/pression1.csv -o ../output/pression1sorted.csv -p1 -r
         else 
             ./exec --$sortn -f ../output/pression1.csv -o ../output/pression1sorted.csv -p1
         fi 
-        gnuplot "../output/pression1sorted.csv" --persist
+        gnuplot "p1.gnu" --persist
     elif (($mode == 2)) #------------------------------------------MODE 2--------------------------------------------------
     then
         cut -d ';' -f2,7 --output-delimiter ';' $b > ../temp/tmp.csv 
@@ -253,26 +254,26 @@ then
         echo "Date;Pression station" > ../output/pression2.csv
         tail -n$((nt-1)) ../temp/tmp.csv >> ../output/pression2.csv 
         rm ../temp/tmp.csv
-        if [$arg_r -eq 1 ]
+        if (($arg_r == 1 ))
         then 
             ./exec --$sortn -f ../output/pression2.csv -o ../output/pression2sorted.csv -p2 -r
         else 
             ./exec --$sortn -f ../output/pression2.csv -o ../output/pression2sorted.csv -p2
         fi 
-        gnuplot "../output/pression2sorted.csv" --persist
+        gnuplot "p2.gnu" --persist
     else #------------------------------------------MODE 3-----------------------------------------------
         cut -d ';' -f1,2,7 --output-delimiter ';' $b  > ../temp/tmp.csv 
         nt=`cat $b | wc -l`
         echo "ID OMM station;Date;Pression station" > ../output/pression3.csv
         tail -n$((nt-1)) ../temp/tmp.csv >> ../output/pression3.csv 
         rm ../temp/tmp.csv
-        if [$arg_r -eq 1 ]
+        if (($arg_r == 1 ))
         then 
             ./exec --$sortn -f ../output/pression3.csv -o ../output/pression3sorted.csv -p3 -r
         else 
             ./exec --$sortn -f ../output/pression3.csv -o ../output/pression3sorted.csv -p3
         fi 
-        gnuplot "../output/pression3sorted.csv" --persist
+        #gnuplot "../output/pression3sorted.csv" --persist
     fi
 fi
 exit 0

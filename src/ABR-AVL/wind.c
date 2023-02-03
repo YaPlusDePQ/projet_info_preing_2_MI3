@@ -11,7 +11,7 @@
 */
 windNode* newWindNode(int station, float direction, float speed, const char* coord){
     windNode* newNode = malloc(sizeof(windNode));
-    if(newNode==NULL) ERR(4, "newWindNode memory allocation failed.\n");
+    if(newNode==NULL) exit(1);//ERR(4, "newWindNode memory allocation failed.\n");
     newNode->lc = NULL;
     newNode->rc = NULL;
     newNode->station = station;
@@ -21,7 +21,7 @@ windNode* newWindNode(int station, float direction, float speed, const char* coo
     newNode->hl = 0;
     newNode->hr = 0;
     strcpy(newNode->coord, coord);
-    DPRINTF("[newHMNode] [%d]: %f %f %s\n",newNode->station, newNode->tDirection, newNode->tSpeed, newNode->coord);
+    //DPRINTF("[newHMNode] [%d]: %f %f %s\n",newNode->station, newNode->tDirection, newNode->tSpeed, newNode->coord);
     return newNode;
 }
 
@@ -33,14 +33,14 @@ windNode* newWindNode(int station, float direction, float speed, const char* coo
 void freeWindNodeTree(windNode* head){
     if(head->lc != NULL) freeWindNodeTree(head->lc); //free all left child
     if(head->rc != NULL) freeWindNodeTree(head->rc); //free all right child
-    DPRINTF("[freeWindNodeTree] freeing %p ", head);
+    //DPRINTF("[freeWindNodeTree] freeing %p ", head);
     if(head != NULL){
         free(head);
-        DPRINTF("[DONE]\n");
+        //DPRINTF("[DONE]\n");
     }
     else{
-        DPRINTF("[FAILED]\n");
-        ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
+        //DPRINTF("[FAILED]\n");
+        exit(1);//ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
     }
 }
 
@@ -123,7 +123,7 @@ windNode* compileWindData(windNode* head, int station, float direction, float sp
     if(head == NULL) return newWindNode(station, direction, speed, coord);
     
     if(head->station == station) {
-        DPRINTF("[compileWindData] updating existing node ");
+        //DPRINTF("[compileWindData] updating existing node ");
         head->tDirection += direction;
         head->tSpeed += speed; 
         head->avgc++;
@@ -145,19 +145,19 @@ windNode* compileWindData(windNode* head, int station, float direction, float sp
 
 void _writeInFileDescendingW(FILE* file, windNode* current){
     if(current->rc != NULL) _writeInFileDescendingW(file, current->rc);
-    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
     if(current->lc != NULL) _writeInFileDescendingW(file, current->lc);
 }
 
 void _writeInFileAscendingW(FILE* file, windNode* current){
     if(current->lc != NULL) _writeInFileAscendingW(file, current->lc);
-    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(fprintf(file, "%d;%f;%f;%s\n", current->station, current->tDirection/current->avgc, current->tSpeed/current->avgc, current->coord) < 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
     if(current->rc != NULL) _writeInFileAscendingW(file, current->rc);
 }
 
 int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) ERR(120, "Failed to create file '%s'", sourcePath);
+    if(source == NULL) exit(1);//ERR(120, "Failed to create file '%s'", sourcePath);
 
     int info = 0;
     windNode *windTree = NULL;
@@ -178,7 +178,7 @@ int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int des
         
         sscanfr = sscanf(line,"%d;%f;%f;%[^\n]",&station, &windDirection, &windSpeed, coord);// @EDIT FOR ORDER
         if(sscanfr==4) windTree = compileWindData(windTree, station, windDirection, windSpeed, coord);
-        if(sscanfr==0) ERR(1, "Can't read data in line %d.\n", info);
+        if(sscanfr==0) exit(1);//ERR(1, "Can't read data in line %d.\n", info);
         printf("\r[WindModeABRAVL] Compiling data %d/?", info);
 
         if(avl){
@@ -195,7 +195,7 @@ int WindModeABRAVL(const char* sourcePath, const char* outPath, int avl, int des
 
     printf("[WindModeABRAVL] creating output file\n");
     FILE* out = fopen(outPath, "w");
-    if(out == NULL) ERR(120, "Failed to create file '%s'", outPath);
+    if(out == NULL) exit(1);//ERR(120, "Failed to create file '%s'", outPath);
 
     fputs("ID OMM station;direction moyenne; vitesse moyenne;X;Y\n", out);
 

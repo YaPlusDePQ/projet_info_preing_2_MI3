@@ -4,28 +4,28 @@
 
 dateNode* newDateNode(const char* date, long long int dateint, int station, float value){
     dateNode* newNode  =  malloc(sizeof(dateNode));
-    if(newNode==NULL) ERR(4, "newDateNode memory allocation failed.\n");
+    if(newNode==NULL) exit(1);//ERR(4, "newDateNode memory allocation failed.\n");
     strcpy(newNode->datestr, date);
     newNode->dateint = dateint;
     newNode->stationTree = newStationNode(station, value);
     newNode->lc = NULL;
     newNode->rc = NULL;
-    DPRINTF("[newStationNode] datestr:%s dateint:%I64d stationTree:%p", newNode->datestr, newNode->dateint, newNode->stationTree);
+    //DPRINTF("[newStationNode] datestr:%s dateint:%I64d stationTree:%p", newNode->datestr, newNode->dateint, newNode->stationTree);
     return newNode;
 }
 
 void freeDateNodeTree(dateNode* head){
     if(head->lc != NULL) freeDateNodeTree(head->lc); //free all left child
     if(head->rc != NULL) freeDateNodeTree(head->rc); //free all right child
-    DPRINTF("[freeDateNodeTree] freeing %p ", head);
+    //DPRINTF("[freeDateNodeTree] freeing %p ", head);
     if(head != NULL){
         freeStationNodeTree(head->stationTree);
         free(head);
-        DPRINTF("[DONE]\n");
+        //DPRINTF("[DONE]\n");
     }
     else{
-        DPRINTF("[FAILED]\n");
-        ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
+        //DPRINTF("[FAILED]\n");
+        exit(1);//ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
     }
 }
 
@@ -109,7 +109,7 @@ dateNode* compileDateData(int mode, dateNode* head, const char* date, long long 
     if(head == NULL) return newDateNode(date, dateint, station, value);
     
     if(head->dateint == dateint){
-        DPRINTF("[compileDateData] updating existing node ");
+        //DPRINTF("[compileDateData] updating existing node ");
         switch(mode){
             case 2:
                 head->stationTree->avg += value;
@@ -136,7 +136,7 @@ dateNode* compileDateData(int mode, dateNode* head, const char* date, long long 
 
 void _writeInFileStationTreeTP23(FILE* file, const char* date, stationNode* current){
     if(current->lc != NULL) _writeInFileStationTreeTP23(file, date, current->lc);
-    if(fprintf(file, "%s;%d;%f\n", date, current->station, current->avg/current->avgc)< 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(fprintf(file, "%s;%d;%f\n", date, current->station, current->avg/current->avgc)< 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
     if(current->rc != NULL) _writeInFileStationTreeTP23(file, date, current->rc);
 
 }
@@ -145,7 +145,7 @@ void _writeInFileDescendingTP23(FILE* file, int mode, dateNode* current){
     if(current->rc != NULL) _writeInFileDescendingTP23(file, mode, current->rc);
     switch(mode){
         case 2:
-            if(fprintf(file, "%s;%f\n", current->datestr, current->stationTree->avg/current->stationTree->avgc)< 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+            if(fprintf(file, "%s;%f\n", current->datestr, current->stationTree->avg/current->stationTree->avgc)< 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
             break;
         case 3:
             _writeInFileStationTreeTP23(file, current->datestr, current->stationTree);
@@ -159,7 +159,7 @@ void _writeInFileAscendingTP23(FILE* file, int mode, dateNode* current){
     if(current->lc != NULL) _writeInFileAscendingTP23(file, mode, current->lc);
     switch(mode){
         case 2:
-            if(fprintf(file, "%s;%f\n", current->datestr, current->stationTree->avg/current->stationTree->avgc)< 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+            if(fprintf(file, "%s;%f\n", current->datestr, current->stationTree->avg/current->stationTree->avgc)< 0) exit(1);//ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
             break;
         case 3:
             _writeInFileStationTreeTP23(file, current->datestr, current->stationTree);
@@ -171,7 +171,7 @@ void _writeInFileAscendingTP23(FILE* file, int mode, dateNode* current){
 
 int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int avl, int mode, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) ERR(120, "Failed to open file '%s'", sourcePath);
+    if(source == NULL) exit(1);//ERR(120, "Failed to open file '%s'", sourcePath);
 
     int info = 0;
     dateNode *dateTree = NULL;
@@ -201,7 +201,7 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
         }
         switch(sscanfr){
             case 0:
-                ERR(1, "Can't read data in line %d.\n", info);
+                exit(1);//ERR(1, "Can't read data in line %d.\n", info);
                 break;
             case 2:
                 if(mode==2) dateTree = compileDateData(mode, dateTree, date, dateToInt(date), station, value);
@@ -227,7 +227,7 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
 
     printf("[TempPressureMode23ABRAVL] creating output file\n");
     FILE* out = fopen(outPath, "w");
-    if(out == NULL) ERR(120, "Failed to create file '%s'", outPath);
+    if(out == NULL) exit(1);//ERR(120, "Failed to create file '%s'", outPath);
 
     printf("[TempPressureMode23ABRAVL] seting up first line\n");
     char st[20] = "";
@@ -259,5 +259,8 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
 }
 
 int TempPressureModeABRAVL(const char* sourcePath, const char* outPath, int avl, int mode, int descending){
-    return mode == 1 ? TempPressureMode1ABRAVL(sourcePath, outPath, avl, descending) : TempPressureMode23ABRAVL(sourcePath, outPath, avl, mode, descending);
+    printf("i:%s, o:%s\n", sourcePath, outPath);
+    if(mode==1) TempPressureMode1ABRAVL(sourcePath, outPath, avl, descending);
+    else TempPressureMode23ABRAVL(sourcePath, outPath, avl, mode, descending);
+    return 0;
 }

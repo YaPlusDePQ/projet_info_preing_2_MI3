@@ -3,7 +3,7 @@
 
 void Option1(char * input,char * output,int r){
     FILE * file = NULL;
-    file = fopen(input,"w");                //opening the returning file (have to put the path)
+    file = fopen(input,"r");                //opening the returning file (have to put the path)
     if(file == NULL){                                            //verification
         printf("error from output file\n");
         printf("error code = %d \n",errno);
@@ -36,7 +36,7 @@ void Option1(char * input,char * output,int r){
 
 void Option2(char * input,char * output,int r){
     FILE * file = NULL;
-    file = fopen(input,"w");                //opening the returning file (have to put the path)
+    file = fopen(input,"r");                //opening the returning file (have to put the path)
     if(file == NULL){                                            //verification
         printf("error from output file\n");
         printf("error code = %d \n",errno);
@@ -69,7 +69,7 @@ void Option2(char * input,char * output,int r){
 
 void Option3(char * input,char * output,int r){
     FILE * file = NULL;
-    file = fopen(input,"w");                //opening the returning file (have to put the path)
+    file = fopen(input,"r");                //opening the returning file (have to put the path)
     if(file == NULL){                                            //verification
         printf("error from output file\n");
         printf("error code = %d \n",errno);
@@ -100,7 +100,7 @@ void Option3(char * input,char * output,int r){
 
 void Wind(char * input,char * output,int r){
     FILE * file = NULL;
-    file = fopen(input,"w");                //opening the returning file (have to put the path)
+    file = fopen(input,"r");                //opening the returning file (have to put the path)
     if(file == NULL){                                            //verification
         printf("error from output file\n");
         printf("error code = %d \n",errno);
@@ -133,7 +133,7 @@ void Wind(char * input,char * output,int r){
 
 void Height(char * input,char * output,int r){
     FILE * file = NULL;
-    file = fopen(input,"w");                //opening the returning file (have to put the path)
+    file = fopen(input,"r");                //opening the returning file (have to put the path)
     if(file == NULL){                                            //verification
         printf("error from output file\n");
         printf("error code = %d \n",errno);
@@ -164,16 +164,20 @@ void Height(char * input,char * output,int r){
 
 void Moisture(char * input,char * output,int r){
     FILE * file = NULL;
-    file = fopen(input,"w");                //opening the returning file (have to put the path)
+    file = fopen(input,"r");                //opening the returning file (have to put the path)
     if(file == NULL){                                            //verification
         printf("error from output file\n");
         printf("error code = %d \n",errno);
         printf("error message = %s \n",strerror(errno));
         exit(2);
     }
+    printf("[Moisture] getting data...\n");
     List * plist = FileIntoList4(file,2);
+    printf("[Moisture] deleting occurence...\n");
 	plist = DeleteAllOccurences(plist,-9999,occurence(plist,-9999));
+    printf("[Moisture] presorting...\n");
 	List * final = PreSortMax(plist);
+    printf("[Moisture] sorting...\n");
     if(r == 0){
         final = SortMoisture(final);
     }
@@ -188,9 +192,11 @@ void Moisture(char * input,char * output,int r){
         printf("error message = %s \n",strerror(errno));
         exit(3);
     }
+    printf("[Moisture] building file...\n");
 	ListIntoFile(final, end, 6);
     free(final);
     free(plist);
     fclose(file);
     fclose(end);
+    printf("[Moisture] Done\n");
 }

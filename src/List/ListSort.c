@@ -251,7 +251,8 @@ List * SortWind(List * plist){                         //sorting the first row (
     List * p = plist;
     List * tmp = plist->next; 
     long long int swap1=0;
-    float swap2=0,swap3=0, swaplat=0,swaplon=0;
+    int swaplat=0,swaplon=0;
+    float swap2=0,swap3=0;
     while(ChecksSortedAscending(plist)){               //Call a function that checks if the list is sorted as we want
         if(p->elem1 > tmp->elem1){                     //Tests if the elements need to be swapped, meaning if the first one is smaller than the second
             swap1 = p->elem1;                          //Swapping of the elements with intermediate variables
@@ -286,7 +287,8 @@ List * SortWindReverse(List *plist){                   //sorting the first row (
     List * p = plist;
     List * tmp = plist->next; 
     long long int swap1=0;
-    float swap2=0,swap3=0, swaplat=0,swaplon=0;
+    int swaplat=0,swaplon=0;
+    float swap2=0,swap3=0;
     while(ChecksSortedDescending(plist)){              //Call a function that checks if the list is sorted as we want
         if(p->elem1 < tmp->elem1){                     //Tests if the elements need to be swapped, meaning if the first one is smaller than the second
             swap1 = p->elem1;                          //Swapping of the elements with intermediate variables
@@ -324,7 +326,8 @@ List * SortHeight(List *plist){                        //sorting the second row 
     List * p = plist;
     List * tmp = plist->next; 
     long long int swap1=0; 
-    float swap2=0, swaplat=0,swaplon=0;
+    float swap2=0;
+    int swaplat=0,swaplon=0;
     while(ChecksSortedDescending2(plist)){             //Call a function that checks if the list is sorted as we want
         if(p->elem2 < tmp->elem2){                     //Tests if the elements need to be swapped, meaning if the first one is smaller than the second
             swap1 = p->elem1;                          //Swapping of the elements with intermediate variables
@@ -358,7 +361,8 @@ List * SortHeightReverse(List *plist){                 //sorting the second row 
     List * p = plist;
     List * tmp = plist->next;
     long long int swap1=0; 
-    float swap2=0, swaplat=0,swaplon=0;
+    float swap2=0;
+    int swaplat=0,swaplon=0;
     while(ChecksSortedAscending2(plist)){              //Call a function that checks if the list is sorted as we want
         if(p->elem2 > tmp->elem2){                     //Tests if the elements need to be swapped, meaning if the first one is smaller than the second
             swap1 = p->elem1;                          //Swapping of the elements with intermediate variables
@@ -393,8 +397,7 @@ List * SortMoisture(List *plist){                      //sorting the second row 
     List * p = plist;
     List * tmp = plist->next; 
     long long int swap1=0;
-    int swapMax=0;
-    float swaplat=0,swaplon=0;
+    int swapMax=0,swaplat,swaplon;
     while(ChecksSortedDescendingMax(plist)){           //Call a function that checks if the list is sorted as we want
         if(p->max < tmp->max){                         //Tests if the elements need to be swapped, meaning if the first one is smaller than the second
             swap1 = p->elem1;                          //Swapping of the elements with intermediate variables
@@ -428,12 +431,11 @@ List * SortMoistureReverse(List *plist){               //sorting the second row 
     List * p = plist;
     List * tmp = plist->next; 
     long long int swap1=0;
-    int swapMax=0;
-    float swaplat=0,swaplon=0;
+    int swapmax=0,swaplat=0,swaplon=0;
     while(ChecksSortedAscendingMax(plist)){            //Call a function that checks if the list is sorted as we want
         if(p->max > tmp->max){                         //Tests if the elements need to be swapped, meaning if the first one is smaller than the second
             swap1 = p->elem1;                          //Swapping of the elements with intermediate variables
-            swapMax = p->max;                            
+            swapmax = p->max;                            
             swaplat = p->lat;
             swaplon = p->lon;
 

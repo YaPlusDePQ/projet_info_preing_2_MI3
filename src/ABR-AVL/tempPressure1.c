@@ -4,7 +4,7 @@
 
 stationNode* newStationNode(int station, float value){
     stationNode* newNode = malloc(sizeof(stationNode));
-    if(newNode==NULL) ERR(4, "newStationNode memory allocation failed.\n");
+    if(newNode==NULL) exit(1);//ERR(4, "newStationNode memory allocation failed.\n");
     newNode->station = station;
     newNode->min = value;
     newNode->max = value;
@@ -12,21 +12,21 @@ stationNode* newStationNode(int station, float value){
     newNode->avgc = 1;
     newNode->lc = NULL;
     newNode->rc = NULL;
-    DPRINTF("[newStationNode] [%d]: min:%f, max:%f, avg:%f, avgc:%d", newNode->station, newNode->min, newNode->max, newNode->avg, newNode->avgc);
+    //DPRINTF("[newStationNode] [%d]: min:%f, max:%f, avg:%f, avgc:%d", newNode->station, newNode->min, newNode->max, newNode->avg, newNode->avgc);
     return newNode;
 }
 
 void freeStationNodeTree(stationNode* head){
     if(head->lc != NULL) freeStationNodeTree(head->lc); //free all left child
     if(head->rc != NULL) freeStationNodeTree(head->rc); //free all right child
-    DPRINTF("[freeStationNodeTree] freeing %p ", head);
+    //DPRINTF("[freeStationNodeTree] freeing %p ", head);
     if(head != NULL){
         free(head);
-        DPRINTF("[DONE]\n");
+        //DPRINTF("[DONE]\n");
     }
     else{
-        DPRINTF("[FAILED]\n");
-        ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
+        //DPRINTF("[FAILED]\n");
+        exit(1);//exit(1); //ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
     }
 }
 
@@ -110,7 +110,7 @@ stationNode* compileStationData(stationNode* head, int station, float value){
     if(head == NULL) return newStationNode(station, value);
     
     if(head->station == station) {
-        DPRINTF("[compileStationData] updating existing node ");
+        //DPRINTF("[compileStationData] updating existing node ");
         head->min = value < head->min ? value : head->min; 
         head->max = value > head->max ? value : head->max; 
         head->avg += value;
@@ -132,7 +132,7 @@ stationNode* compileStationData(stationNode* head, int station, float value){
 
 void _writeInFileDescendingTP1(FILE* file, stationNode* current){
     if(current->rc != NULL) _writeInFileDescendingTP1(file, current->rc);
-    if(fprintf(file, "%d;%f;%f;%f\n", current->station, current->min, current->max, current->avg/current->avgc) < 0) ERR(1, "Can't write data in file\n");  // @EDIT FOR ORDER
+    if(fprintf(file, "%d;%f;%f;%f\n", current->station, current->min, current->max, current->avg/current->avgc) < 0) exit(1); //ERR(1, "Can't write data in file\n");  // @EDIT FOR ORDER
     if(current->lc != NULL) _writeInFileDescendingTP1(file, current->lc);
 }
 /**
@@ -144,13 +144,13 @@ void _writeInFileDescendingTP1(FILE* file, stationNode* current){
 // */
 void _writeInFileAscendingTP1(FILE* file, stationNode* current){
     if(current->lc  != NULL) _writeInFileAscendingTP1(file, current->lc);
-    if(fprintf(file, "%d;%f;%f;%f\n", current->station, current->min, current->max, current->avg/current->avgc) < 0) ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(fprintf(file, "%d;%f;%f;%f\n", current->station, current->min, current->max, current->avg/current->avgc) < 0) exit(1); //ERR(1, "Can't write data in file\n"); // @EDIT FOR ORDER
     if(current->rc != NULL) _writeInFileAscendingTP1(file, current->rc);
 }
 
 int TempPressureMode1ABRAVL(const char* sourcePath, const char* outPath, int avl, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) ERR(120, "Failed to open file '%s'", sourcePath);
+    if(source == NULL) exit(1); //ERR(120, "Failed to open file '%s'", sourcePath);
 
     int info = 0;
     stationNode *stationTree = NULL;
@@ -159,16 +159,16 @@ int TempPressureMode1ABRAVL(const char* sourcePath, const char* outPath, int avl
     char line[1000] = ""; //line buffer
 
     fgets(line, 1000, source); //skip first line
-
+    printf("ok\n");
     while(fgets(line, 1000, source)){ //make sure that te whole line is read
         info++; 
         value = 0;
         station = 0;
         int sscanfr = 0;
-
+        
         sscanfr=sscanf(line,"%d;%f",&station, &value); // @EDIT FOR ORDER
         if (sscanfr==2) stationTree = compileStationData(stationTree, station, value);
-        ERR(1, "Can't read data in line %d.\n", info);
+        if (sscanfr==0) exit(1); //ERR(1, "Can't read data in line %d.\n", info);
         printf("\r[TempPressureMode1ABRAVL] Compiling data %d/?     ", info);
 
         if(avl){
@@ -185,7 +185,7 @@ int TempPressureMode1ABRAVL(const char* sourcePath, const char* outPath, int avl
 
     printf("[TempPressureMode1ABRAVL] creating output file\n");
     FILE* out = fopen(outPath, "w");
-    if(out == NULL) ERR(120, "Failed to create file '%s'", outPath);
+    if(out == NULL) exit(1); //ERR(120, "Failed to create file '%s'", outPath);
 
     printf("[TempPressureMode1ABRAVL] seting up first line\n");
     char st[20] = "";

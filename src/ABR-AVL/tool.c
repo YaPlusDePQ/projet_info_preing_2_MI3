@@ -50,6 +50,6 @@ long long int dateToInt(const char* date){
         return ( (year*365+monthToDay(month)+day)*24 + hour + utc ); //date in second. every year are 365 day for simplification (no impact detected)
     }
     else{
-        ERR(210, "Failed to read date from %s", date);
+        exit(1);//ERR(210, "Failed to read date from %s", date);
     }
 }

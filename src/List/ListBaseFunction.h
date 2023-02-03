@@ -8,15 +8,15 @@ typedef struct list{
     float elem3;
     int min;
     int max;
-    float lon;
-    float lat;
+    int lon;
+    int lat;
     float average;
     struct list * next;
 }List;
 
-List * ListCreation(long long int a, float b, float c, float lat, float lon);                              //To create a list with it's first link (including 3 rows, latitude, longitude)
+List * ListCreation(long long int a, float b, float c, int lat, int lon);                              //To create a list with it's first link (including 3 rows, latitude, longitude)
 
-List* ListInsertEnd(List * plist, long long int a,float b, float c, float lat, float lon);                 //To insert a link (3 rows, latitude, longitude) to the list, at the end of it 
+List* ListInsertEnd(List * plist, long long int a,float b, float c, int lat, int lon);                 //To insert a link (3 rows, latitude, longitude) to the list, at the end of it 
 
 void DisplayList(List * plist);                                 //To display the list
 

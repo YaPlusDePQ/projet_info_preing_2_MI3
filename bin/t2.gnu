@@ -1,4 +1,4 @@
-reset
+
 
 set grid nopolar
 set grid xtics mxtics ytics mytics noztics nomztics nortics nomrtics \
@@ -15,8 +15,8 @@ set format x '%Y-%m-%d %H'
 set xrange [*:*]
 set yrange [*:*]
 set xtics rotate by 45 right
-plot "test.csv" using (sprintf("%s-%s",substr(stringcolumn(1),1,10),substr(stringcolumn(1),12,14))):2 with lines notitle
+plot "../output/temperature2sorted.csv" using (sprintf("%s-%s",substr(stringcolumn(1),1,10),substr(stringcolumn(1),12,14))):2 with lines notitle
 
 
 pause -1 "Hit return to continue"
-reset
+

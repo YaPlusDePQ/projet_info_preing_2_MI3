@@ -13,13 +13,13 @@
 */
 HMNode* newHMNode(int station, int value, const char* coord){
     HMNode* newNode = malloc(sizeof(HMNode));
-    if(newNode==NULL) ERR(100, "newHMNode memory allocation failed.\n");
+    if(newNode==NULL) exit(1);//ERR(100, "newHMNode memory allocation failed.\n");
     newNode->lc = NULL;
     newNode->rc = NULL;
     newNode->station = station;
     newNode->value = value;
     strcpy(newNode->coord, coord);
-    DPRINTF("[newHMNode] [%d]: %d %s\n",newNode->station, newNode->value, newNode->coord);
+    //DPRINTF("[newHMNode] [%d]: %d %s\n",newNode->station, newNode->value, newNode->coord);
     return newNode;
 }
 
@@ -31,14 +31,15 @@ HMNode* newHMNode(int station, int value, const char* coord){
 void freeHMNodeTree(HMNode* head){
     if(head->lc != NULL) freeHMNodeTree(head->lc); //free all left child
     if(head->rc != NULL) freeHMNodeTree(head->rc); //free all right child
-    DPRINTF("[freeHMNodeTree] freeing %p ", head);
+    //DPRINTF("[freeHMNodeTree] freeing %p ", head);
     if(head != NULL){
         free(head);
-        DPRINTF("[DONE]\n");
+        //DPRINTF("[DONE]\n");
     }
     else{
-        DPRINTF("[FAILED]\n");
-        ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
+        //DPRINTF("[FAILED]\n");
+        //ERR(101, "Impossible value for head imply memory leak or losing track of head during process.");
+        exit(101);
     }
 }
 
@@ -185,7 +186,7 @@ HMNode* compileHMData(HMNode* head, int station, int value, const char* coord){
     if(head == NULL) return newHMNode(station, value, coord); //if the tree doesnt exist (only 1 time)
     
     if(head->station == station){ //update already existing station
-        DPRINTF("[compileHMData] updating existing node ");
+        //DPRINTF("[compileHMData] updating existing node ");
         head->value = value > head->value ? value : head->value; 
         if( !strcmp(head->coord, "")) strcpy(head->coord, coord);
         return head;
@@ -251,7 +252,7 @@ HMNode* sortHMNodeTree(HMNode* head, HMNode* sortedHead){
 */
 void writeInFileDescendingHM(FILE* file, HMNode* current){
     if(current->rc != NULL) writeInFileDescendingHM(file, current->rc);
-    if(fprintf(file, "%d;%d;%s\n", current->station, current->value, current->coord) < 0) ERR(300, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(fprintf(file, "%d;%d;%s\n", current->station, current->value, current->coord) < 0) exit(300);//ERR(300, "Can't write data in file\n"); // @EDIT FOR ORDER
     if(current->lc != NULL) writeInFileDescendingHM(file, current->lc);
 }
 
@@ -264,7 +265,7 @@ void writeInFileDescendingHM(FILE* file, HMNode* current){
 */
 void writeInFileAscendingHM(FILE* file, HMNode* current){
     if(current->lc != NULL) writeInFileAscendingHM(file, current->lc);
-    if(fprintf(file, "%d;%d;%s\n", current->station, current->value, current->coord) < 0) ERR(301, "Can't write data in file\n"); // @EDIT FOR ORDER
+    if(fprintf(file, "%d;%d;%s\n", current->station, current->value, current->coord) < 0) exit(300);//ERR(301, "Can't write data in file\n"); // @EDIT FOR ORDER
     if(current->rc != NULL) writeInFileAscendingHM(file, current->rc);
 }
 
@@ -282,7 +283,7 @@ void writeInFileAscendingHM(FILE* file, HMNode* current){
 */
 int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mode, int avl, int descending){
     FILE* source = fopen(sourcePath, "r");
-    if(source == NULL) ERR(102, "Failed to create file '%s'", sourcePath);
+    if(source == NULL) exit(102);//ERR(102, "Failed to create file '%s'", sourcePath);
 
     int info = 0; //debug info
     HMNode *HMTree = NULL;
@@ -313,7 +314,7 @@ int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mo
         
         sprintf(coord, "%f;%f", x,y); //write x and y into coord
         if(sscanfr == 4) HMTree = compileHMData(HMTree, station, value, coord); //add the new datas
-        if(sscanfr == 0) ERR(200, "Can't read data in line %d.\n", info);
+        if(sscanfr == 0) exit(200);//ERR(200, "Can't read data in line %d.\n", info);
         printf("\r[HeightMoistureModeABRAVL] Compiling data %d/?     ", info);
 
         if(avl){ //balance the tree if AVL mode
@@ -336,7 +337,7 @@ int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mo
     
     printf("[HeightMoistureModeABRAVL] Creating output file\n");
     FILE* out = fopen(outPath, "w");
-    if(out == NULL) ERR(103, "Failed to create file '%s'", outPath);
+    if(out == NULL) exit(103);//ERR(103, "Failed to create file '%s'", outPath);
     
     printf("[HeightMoistureModeABRAVL] Writting column\n"); //organise column name
     char c0[20] = "";
