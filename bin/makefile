@@ -1,6 +1,6 @@
 CC := gcc
-EXECNAME := exe
-DIRECTORIES := $(sort $(dir $(wildcard ../src/c/*/)))
+EXECNAME := exec
+DIRECTORIES := $(sort $(dir $(wildcard ../src/*/)))
 SRC := $(foreach dir, $(DIRECTORIES), $(dir)*.c)
 
 BUILD:

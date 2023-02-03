@@ -191,11 +191,11 @@ int TempPressureMode23ABRAVL(const char* sourcePath, const char* outPath, int av
 
         switch(mode){
             case 2:
-                sscanfr=sscanf(line,"%[^;];%f", date, &value) == 0); // @EDIT FOR ORDER
+                sscanfr=sscanf(line,"%[^;];%f", date, &value); // @EDIT FOR ORDER
                 station = 0;
                 break;
             case 3:
-                sscanfr=sscanf(line,"%d;%[^;];%f",&station, date, &value) == 0); // @EDIT FOR ORDER
+                sscanfr=sscanf(line,"%d;%[^;];%f",&station, date, &value); // @EDIT FOR ORDER
                 break;
 
         }
