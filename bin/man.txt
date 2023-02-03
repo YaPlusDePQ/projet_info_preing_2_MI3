@@ -6,12 +6,12 @@
     -p 1: sort average, min and max pressures according to the stations' IDs 
     -p 2: sort average pressures per date/hour according to the stations' IDs 
     -p 3: sort average pressures per date/hour according to the stations' IDs in a chronological order
-if the mode is different from 1,2 or 3 it will exit (2)
+
 -t : temperature (you have to add space after the t )
     -t 1: sort average, min and max temperatures according to the stations' IDs 
     -t 2: sort average temperature per date/hour according to the stations' IDs 
     -t 3: sort average temperatures per date/hour according to the stations' IDs in a chronological order
-if the mode is different from 1,2 or 3 it will exit (2)
+
 -d <min> <max>: date 
 -r : to sort in a reverse order
 -F: France & Corse
