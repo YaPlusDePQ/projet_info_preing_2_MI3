@@ -16,83 +16,83 @@ arg_p=0
 arg_d=0
 arg_f=0
 arg_r=0
-while [ $# -ne 0 ]
+while [ $# -ne 0 ] # look over all the arguments entered by the user
 do 
-    case $1 in
-        --abr)
+    case $1 in # discussing the first argument 
+        --abr) # sorting using abr
             sortn="abr"
-            shift
+            shift # to shift to the next argument 
             ;;
-        --avl)
+        --avl) # sorting using avl
             sortn="avl"
-            shift
+            shift # to shift to the next argument 
             ;;
-        --tab)
+        --tab) #sorting using tab 
             sortn="tab"
-            shift 
+            shift # to shift to the next argument 
         ;;
-        --help)
+        --help) #help
             less man.txt
-            shift
+            shift # to shift to the next argument 
             ;;
         -f)
             arg_f=1
-            a="$2"
-            b="$2"  
-            shift
-            shift
+            a="$2" #retrieval of the file's name
+            b="$2"  #retrieval of the file's name
+            shift # to shift to the next argument 
+            shift # to shift to the next argument 
             ;;
-        -F)
+        -F) #argument for the location : france and corse
             arg_F=1
-            shift
+            shift # to shift to the next argument 
             ;;
-        -A) 
+        -A) #argument for the location: west indies (antilles)
             arg_A=1
-            shift
+            shift # to shift to the next argument 
             ;;
-        -G) 
+        -G) #argument for the location : french guyana
             arg_G=1
-            shift
+            shift # to shift to the next argument 
             ;;
-        -O) 
+        -O) # argument for the location : indian ocean
             arg_O=1
-            shift 
+            shift # to shift to the next argument 
             ;;
-        -Q)
+        -Q) #argument for the location Antartic
             arg_Q=1
-            shift
+            shift # to shift to the next argument 
             ;;
-        -S)
+        -S) #argument for the location Saint-Pierre et Miquelon
             arg_S=1
-            shift
+            shift # to shift to the next argument 
             ;;
-        -h)
+        -h) #argument for the height 
             arg_h=1
-            shift
+            shift # to shift to the next argument 
         ;;
-        -m)
+        -m) #argument for the moisture
             arg_m=1
-            shift
+            shift # to shift to the next argument 
             ;;
-        -w)
+        -w) # argument for the wind
             arg_w=1
-            shift
+            shift # to shift to the next argument 
             ;;
-        -t)
+        -t) #argument for the temperature
             arg_t=1
             mode=$2
-            shift
-            shift
+            shift # to shift to the next argument 
+            shift # to shift to the next argument 
             ;;
-        -p)
-            arg_p=1
-            mode=$2
-            shift
-            shift
+        -p) # argument for pressure
+            arg_p=1 
+            mode=$2 #mode choice
+            shift # to shift to the next argument 
+            shift # to shift to the next argument 
             ;;
-        -r)
+        -r) #argument for sorting by reverse
             arg_r=1
-            shift
+            shift # to shift to the next argument 
             ;;
         *) echo "ERROR! Command not found($1). Use command --help for the man"
             exit 1
@@ -229,7 +229,7 @@ then
         else 
             ./exec --$sortn -f ../output/temperature3.csv -o ../output/temperature3sorted.csv -t3
         fi 
-        #gnuplot "t3.gnu" --persist
+        #gnuplot "t3.gnu" --persist # couldn't create the gnuplot for mode 3
     fi
 fi  
 if (($arg_p == 1)) #----------------------------------Pression----------------------------------
