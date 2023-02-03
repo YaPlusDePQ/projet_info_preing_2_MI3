@@ -55,7 +55,6 @@ The script will remove at the end the temporary files created during the executi
 The user have to choose a sorting mode (abr, avl or tab) and the c will operate according to that 
 the .c program will take as an input the file entered after the -f and will return an output file (which will be an input file for gnuplot)
 
-## AVL/ABR : 
-Its a sorting according to binary trees
-The 
-## TAB :
+# Gnuplot 
+It will be launched through the command gnuplot in the script 
+
