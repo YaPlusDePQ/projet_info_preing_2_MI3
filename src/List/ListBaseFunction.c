@@ -1,6 +1,6 @@
 #include "../mainDefine.h"
 
-List * ListCreation(long long int a, float b, float c, int lat, int lon){                //To create a list with it's first link (including 3 rows, latitude, longitude)
+List * ListCreation(long long int a, float b, float c, float lat, float lon){                //To create a list with it's first link (including 3 rows, latitude, longitude)
     List * p = malloc(sizeof(List));                    //Creation with a malloc
     if (p == NULL){                                     //verification
         exit(1);
@@ -17,7 +17,7 @@ List * ListCreation(long long int a, float b, float c, int lat, int lon){       
     return p;
 }
 
-List* ListInsertEnd(List * plist, long long int a, float b, float c, int lat, int lon){  //To insert a link (3 rows, latitude, longitude) to the list, at the end of it 
+List* ListInsertEnd(List * plist, long long int a, float b, float c, float lat, float lon){  //To insert a link (3 rows, latitude, longitude) to the list, at the end of it 
     List * new = ListCreation(a,b,c,lat,lon);
     List * p = plist;
     while(p->next != NULL){                             //Loop to go until the link is NULL to link it to a new one created above
@@ -31,10 +31,10 @@ void DisplayList(List * plist){             //To display the list
     List * p = plist;
     while(p != NULL){                       //Loop to go until the end of the list
         if(p->next == NULL){
-            printf("%I64d; %f; %f; min : %d; max : %d; av : %f; lat : %d; lon : %d\n\n", p->elem1,p->elem2,p->elem3,p->min,p->max,p->average,p->lat,p->lon);
+            printf("%I64d; %f; %f; min : %d; max : %d; av : %f; lat : %f; lon : %f\n\n", p->elem1,p->elem2,p->elem3,p->min,p->max,p->average,p->lat,p->lon);
         }
         else{
-            printf("%I64d; %f; %f; min : %d; max : %d; av : %f; lat : %d; lon : %d   ->\n", p->elem1,p->elem2,p->elem3,p->min,p->max,p->average,p->lat,p->lon);
+            printf("%I64d; %f; %f; min : %d; max : %d; av : %f; lat : %f; lon : %f   ->\n", p->elem1,p->elem2,p->elem3,p->min,p->max,p->average,p->lat,p->lon);
         }
         p = p->next;
     }
