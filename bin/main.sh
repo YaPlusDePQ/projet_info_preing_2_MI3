@@ -23,7 +23,7 @@ do
             shift
             ;;
         --avl)
-            sortn= "avl"
+            sortn="avl"
             shift
             ;;
         --tab)
@@ -122,16 +122,16 @@ elif (($arg_G == 1)) #---------------------FRENCH GYANA-------------------------
 then 
     awk -F ";" ' 2.1<=$10 && $10<=5.9 && -54.7<=$11 && $11<=-51 {print $0} ' $a  > ../temp/guyane.csv
     b="../temp/guyane.csv"
-elif (($arg_S == 1))#-----------------------SAINT-PIERRE ET MIQUELON --------------------------
+elif (($arg_S == 1)) #-----------------------SAINT-PIERRE ET MIQUELON --------------------------
 then 
     awk -F ";" ' 46.6<=$10 && $10<=47.1 && -56.5<=$11 && $11<=-56 {print $0} ' $a  > ../temp/saint_pierre.csv
     b="../temp/saint_pierre.csv"
-elif (($arg_O == 1))#---------------------------INDIAN OCEAN---------------------------
+elif (($arg_O == 1)) #---------------------------INDIAN OCEAN---------------------------
 then
 
     awk -F ";" ' -60.6<=$10 && $10<=8.16 && 28.3<=$11 && $11<=132.9 {print $0} ' $a  > ../temp/oc_indien.csv
     b="../temp/oc_indien.csv"
-elif (($arg_Q == 1))#------------------------------ANTARTIC----------------------
+elif (($arg_Q == 1)) #------------------------------ANTARTIC----------------------
 then 
     awk -F ";" ' -63.5<=$10 && $10<=-57.6 && -172<=$11 && $11<=17.4 {print $0} '  $a  > ../temp/antartique.csv
     b="../temp/antartique.csv"
@@ -149,13 +149,13 @@ then
     then 
         ./exec --$sortn -f ../output/height.csv -o ../output/heightsorted.csv -h -r
     else 
-        ./exec --$sortn-f ../output/height.csv -o ../output/heightsorted.csv -h 
+        ./exec --$sortn -f ../output/height.csv -o ../output/heightsorted.csv -h 
     fi 
 
     gnuplot "height.gnu" --persist
 fi   
 
-if (($arg_m == 1))#-----------------------moisture---------------------
+if (($arg_m == 1)) #-----------------------moisture---------------------
 then 
     cut -d ';' -f1,6,10,11 --output-delimiter ';' $b  > ../temp/tmp.csv
     nt=`cat $b | wc -l`
@@ -171,7 +171,7 @@ then
     echo "test"
     gnuplot "moisture.gnu" --persist --slow
 fi  
-if (($arg_w == 1))#------------------------WIND----------------------
+if (($arg_w == 1)) #------------------------WIND----------------------
 then 
     cut -d ';' -f1,4,5,10,11 --output-delimiter ';' $b > ../temp/tmp.csv
     nt=`cat $b | wc -l`
@@ -228,10 +228,10 @@ then
         else 
             ./exec --$sortn -f ../output/temperature3.csv -o ../output/temperature3sorted.csv -t3
         fi 
-        #gnuplot "../output/temperature3sorted.csv" --persist
+        #gnuplot "t3.gnu" --persist
     fi
 fi  
-if (($arg_p == 1))#----------------------------------Pression----------------------------------
+if (($arg_p == 1)) #----------------------------------Pression----------------------------------
 then 
     if (($mode == 1)) #------------------------------------MODE 1------------------------------------------ 
     then 
@@ -273,7 +273,7 @@ then
         else 
             ./exec --$sortn -f ../output/pression3.csv -o ../output/pression3sorted.csv -p3
         fi 
-        #gnuplot "../output/pression3sorted.csv" --persist
+        #gnuplot "p3.gnu" --persist
     fi
 fi
 exit 0
