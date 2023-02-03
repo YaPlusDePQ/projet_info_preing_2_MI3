@@ -433,7 +433,7 @@ List * SortMoistureReverse(List *plist){               //sorting the second row 
     while(ChecksSortedAscendingMax(plist)){            //Call a function that checks if the list is sorted as we want
         if(p->max > tmp->max){                         //Tests if the elements need to be swapped, meaning if the first one is smaller than the second
             swap1 = p->elem1;                          //Swapping of the elements with intermediate variables
-            swapmax = p->max;                            
+            swapMax = p->max;                            
             swaplat = p->lat;
             swaplon = p->lon;
 
