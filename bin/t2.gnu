@@ -8,6 +8,7 @@ set title "Températures moyennes par date/heure"
 set xlabel "Date/Heure"
 set ylabel "Températures moyennes"
 set datafile separator ";"
+
 set autoscale noextend
 set timefmt '%Y-%m-%d %H'
 set xdata time

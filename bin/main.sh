@@ -1,5 +1,6 @@
 #!/bin/bash 
-make -f makefile
+#make -f makefile
+gcc -Wall ../src/*.c ../src/ABR-AVL/*.c  -o exec
 #initialization
 arg_F=0
 arg_A=0
@@ -110,11 +111,11 @@ a="../temp/tmp0.csv"
 sed 's/,/;/g' $a > ../temp/tmp1.csv #Splitting column $10 into two columns
 b="../temp/tmp1.csv"
 #--------------------------------------------------LOCATIONS----------------------------------------------------
-if (($arg_A == 1 ))#--------------------------------ANTILLES------------------------------------
+if (($arg_A == 1 )) #--------------------------------ANTILLES------------------------------------
 then
     awk -F ";" '9.5<=$10 && $10<=22.1 && -76.03<=$11 && $11<=-53.03 {print $0}' $a > ../temp/Antilles.csv
     b="../temp/Antilles.csv"   
-elif (($arg_F == 1))#-----------------FRANCE & CORSICA--------------------------------
+elif (($arg_F == 1)) #-----------------FRANCE & CORSICA--------------------------------
 then 
     awk -F ";" ' 41<=$10 && $10<=52 && -5.5<=$11 && $11<=9.4 {print $0;} ' $a   > ../temp/france.csv
     b="../temp/france.csv"
@@ -133,7 +134,7 @@ then
     b="../temp/oc_indien.csv"
 elif (($arg_Q == 1)) #------------------------------ANTARTIC----------------------
 then 
-    awk -F ";" ' -63.5<=$10 && $10<=-57.6 && -172<=$11 && $11<=17.4 {print $0} '  $a  > ../temp/antartique.csv
+    awk -F ";" ' -100<=$10 && $10<=-58 {print $0} '  $a  > ../temp/antartique.csv
     b="../temp/antartique.csv"
 
 fi 
@@ -276,4 +277,6 @@ then
         #gnuplot "p3.gnu" --persist
     fi
 fi
+cd ../temp
+rm *.csv
 exit 0
