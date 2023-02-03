@@ -1,22 +1,23 @@
--f : to specify the file 
+-f <file> : to specify the file 
 -h : height
 -m : moisuture 
 -w : wind 
 -p : pression (you have to add space after the p )
-    -p 1: 
-    -p 2:
-    -p 3: 
+    -p 1: sort average, min and max pressures according to the stations' IDs 
+    -p 2: sort average pressures per date/hour according to the stations' IDs 
+    -p 3: sort average pressures per date/hour according to the stations' IDs in a chronological order
 -t : temperature (you have to add space after the t )
-    -t 1:
-    -t 2:
-    -t 3:
+    -t 1: sort average, min and max temperatures according to the stations' IDs 
+    -t 2: sort average temperature per date/hour according to the stations' IDs 
+    -t 3: sort average temperatures per date/hour according to the stations' IDs in a chronological order
 -d <min> <max>: date 
--F: France + corse
--A: antilles
--G: guyane francaise
--O: ocean indien
--S : saint pierre et miquelon 
--Q : Antartique 
+-r : to sort in a reverse order
+-F: France & Corse
+-A: West Indies
+-G: French Gyana
+-O: Indian Ocean
+-S : Saint-Pierre et miquelon 
+-Q : Antartic
 --avl : sort data using avl
 --abr : sort data using abr
 --tab : sort data using tab 
