@@ -17,23 +17,23 @@ int main(int argc, char **argv){
     printf("[main] starting sorting...\n");
     switch(mode[1]){
         case 'm':
-            if(!strcmp(type, "--abr")) HeightMoistureModeABRAVL(sourcePath, outPath, MOISTUREMODE, 0, !isReversed);
+            if(!strcmp(type, "--abr")) HeightMoistureModeABRAVL(sourcePath, "../output/moisturesorted.csv", MOISTUREMODE, 0, !isReversed);
             else{ 
-                if(!strcmp(type, "--avl")) HeightMoistureModeABRAVL(sourcePath, outPath, MOISTUREMODE, 1, !isReversed);
-                else Moisture(sourcePath, outPath,isReversed);
+                if(!strcmp(type, "--avl")) HeightMoistureModeABRAVL(sourcePath, "../output/moisturesorted.csv", MOISTUREMODE, 1, !isReversed);
+                else Moisture(sourcePath, "../output/moisturesorted.csv",isReversed);
             }
             break;
         case 'h':
-            if(!strcmp(type, "--abr"))HeightMoistureModeABRAVL(sourcePath, outPath, HEIGHTMODE, 0, !isReversed);
+            if(!strcmp(type, "--abr"))HeightMoistureModeABRAVL(sourcePath, outPath, "../output/heightsorted.csv", 0, !isReversed);
             else {
-                if(!strcmp(type, "--avl"))HeightMoistureModeABRAVL(sourcePath, outPath, HEIGHTMODE, 1, !isReversed);
-                else Height(sourcePath, outPath, isReversed);
+                if(!strcmp(type, "--avl"))HeightMoistureModeABRAVL(sourcePath, outPath, "../output/heightsorted.csv", 1, !isReversed);
+                else Height(sourcePath, "../output/heightsorted.csv", isReversed);
             }
             break;
         case 'w':
-            if(!strcmp(type, "--abr"))WindModeABRAVL(sourcePath, outPath, 0, isReversed);
+            if(!strcmp(type, "--abr"))WindModeABRAVL(sourcePath, "../output/windsorted.csv", 0, isReversed);
             else {
-                if(!strcmp(type, "--avl"))WindModeABRAVL(sourcePath, outPath, 1, isReversed);
+                if(!strcmp(type, "--avl"))WindModeABRAVL(sourcePath, "../output/windsorted.csv", 1, isReversed);
                 else Wind(sourcePath, outPath, isReversed);
             }
             break;
