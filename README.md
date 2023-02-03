@@ -1,3 +1,32 @@
+# Folders' organisation 
+## Folder bin : 
+It contains :
+    the gnuplot files 
+    the main.sh (the shell code)
+    the makefile 
+    the manual (man.txt)
+## Folder examples :
+### Folder outputc : 
+contains some .csv examples (result of the sorting)
+# Folder outputpng : 
+Contains some png examples (results of gnuplot) 
+## src :
+### AVL/ABR : 
+contains all the .c files created for the sort by AVL/ABR
+### TAB :
+contains all the .c files created for the sort by TAB
+
+### the main program (main.c and mainDefine.h) as well as tool.c and tool.h
+## temp : 
+contains the temporary files created during the execution which will be removed at the end 
+
+## !:
+we couldn't add the inputc files as examples because they are too heavy to upload on the git 
+
+# !!:
+The original file is too heavy we couldn't upload it on the git. The user should add it to the folder before any execution or add the file directory 
+
+
 # SCRIPTSHELL
 
 The script will execute the programme through the command make to execute the makefile 
