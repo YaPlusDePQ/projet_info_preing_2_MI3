@@ -332,7 +332,7 @@ int HeightMoistureModeABRAVL(const char* sourcePath, const char* outPath, int mo
     printf("[HeightMoistureModeABRAVL] Sorting tree\n");
     HMNode* sortedHMTree = sortHMNodeTree(HMTree, NULL); //sort the tree by value
 
-    printf("[sortHMNodeTree] Cleaning up old tree\n");
+    printf("[HeightMoistureModeABRAVL] Cleaning up old tree\n");
     freeHMNodeTree(HMTree);
     
     printf("[HeightMoistureModeABRAVL] Creating output file\n");
