@@ -24,9 +24,9 @@ int main(int argc, char **argv){
             }
             break;
         case 'h':
-            if(!strcmp(type, "--abr"))HeightMoistureModeABRAVL(sourcePath, outPath, "../output/heightsorted.csv", 0, !isReversed);
+            if(!strcmp(type, "--abr"))HeightMoistureModeABRAVL(sourcePath, "../output/heightsorted.csv", HEIGHTMODE,0, !isReversed);
             else {
-                if(!strcmp(type, "--avl"))HeightMoistureModeABRAVL(sourcePath, outPath, "../output/heightsorted.csv", 1, !isReversed);
+                if(!strcmp(type, "--avl"))HeightMoistureModeABRAVL(sourcePath, "../output/heightsorted.csv", HEIGHTMODE, 1, !isReversed);
                 else Height(sourcePath, "../output/heightsorted.csv", isReversed);
             }
             break;
