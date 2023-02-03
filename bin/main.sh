@@ -83,20 +83,12 @@ do
         -t) #argument for the temperature
             arg_t=1
             mode=$2
-            if (($mode != 1 || $mode!=2 || $mode!=3))
-            then 
-                exit(2)
-            fi 
             shift # to shift to the next argument 
             shift # to shift to the next argument 
             ;;
         -p) # argument for pressure
             arg_p=1 
             mode=$2 #mode choice
-            if (($mode != 1 || $mode!=2 || $mode!=3))
-            then 
-                exit(2)
-            fi 
             shift # to shift to the next argument 
             shift # to shift to the next argument 
             ;;
